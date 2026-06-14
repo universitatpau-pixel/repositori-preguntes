@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Repositori de Preguntes</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff; --bg-secondary: #f5f5f5; --border: #e0e0e0; --border-secondary: #d0d0d0;
+      --text: #111111; --text-secondary: #555555; --text-tertiary: #999999;
+      --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#1a1a1a; --bg-secondary:#252525; --border:#333333; --border-secondary:#444444; --text:#f0f0f0; --text-secondary:#aaaaaa; --text-tertiary:#666666; }
+    }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg-secondary); color:var(--text); min-height:100vh; font-size:16px; }
+    .container { max-width:640px; margin:0 auto; padding:1.5rem 1rem; }
+    .screen { display:none; } .screen.active { display:block; }
+    .topbar { display:flex; align-items:center; gap:10px; margin-bottom:1.5rem; }
+    .back-btn { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-md); padding:8px 14px; font-size:13px; cursor:pointer; color:var(--text-secondary); display:flex; align-items:center; gap:5px; flex-shrink:0; }
+    .back-btn:hover { background:var(--bg-secondary); }
+    .topbar h2 { font-size:18px; font-weight:500; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .btn-icon { background:none; border:none; cursor:pointer; color:var(--text-tertiary); padding:6px 8px; border-radius:var(--radius-md); font-size:16px; }
+    .btn-icon:hover { color:var(--text); background:var(--bg-secondary); }
+    .card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; margin-bottom:1rem; }
+    .field { margin-bottom:14px; }
+    .field label { display:block; font-size:13px; color:var(--text-secondary); margin-bottom:5px; font-weight:500; }
+    .field input,.field textarea,.field select { width:100%; padding:9px 12px; border:0.5px solid var(--border); border-radius:var(--radius-md); background:var(--bg); color:var(--text); font-size:14px; font-family:inherit; outline:none; transition:border-color 0.15s; }
+    .field input:focus,.field textarea:focus,.field select:focus { border-color:#534AB7; }
+    .field textarea { resize:vertical; min-height:70px; }
+    .char-count { font-size:11px; color:var(--text-tertiary); text-align:right; margin-top:3px; }
+    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+    .form-footer { display:flex; justify-content:flex-end; margin-top:4px; }
+    .divider { border:none; border-top:0.5px solid var(--border); margin:1.25rem 0; }
+    .btn-primary { background:#534AB7; color:#fff; border:none; border-radius:var(--radius-md); padding:10px 22px; font-size:14px; font-weight:500; cursor:pointer; font-family:inherit; }
+    .btn-primary:hover { background:#3C3489; } .btn-primary:disabled { opacity:0.4; cursor:not-allowed; }
+    .btn-sec { background:none; border:0.5px solid var(--border-secondary); border-radius:var(--radius-md); padding:9px 18px; font-size:14px; cursor:pointer; color:var(--text); font-family:inherit; }
+    .btn-sec:hover { background:var(--bg-secondary); }
+    .btn-sm { font-size:12px; background:none; border:0.5px solid var(--border); border-radius:var(--radius-md); padding:4px 10px; cursor:pointer; color:var(--text-secondary); font-family:inherit; }
+    .btn-sm:hover { background:var(--bg-secondary); }
+    .btn-nova { width:100%; border:0.5px dashed var(--border-secondary); background:none; border-radius:var(--radius-lg); padding:1rem; cursor:pointer; color:var(--text-secondary); font-size:14px; display:flex; align-items:center; justify-content:center; gap:8px; font-family:inherit; }
+    .btn-nova:hover { background:var(--bg); color:var(--text); }
+    .btn-report { background:none; border:none; cursor:pointer; color:#E24B4A; font-size:17px; padding:4px 6px; border-radius:var(--radius-md); }
+    .btn-report:hover { background:#FCEBEB; }
+    .toast { font-size:14px; padding:10px 18px; border-radius:var(--radius-md); text-align:center; margin-bottom:1rem; display:none; font-weight:500; }
+    .toast.show { display:block; } .toast-ok { background:#1D9E75; color:#fff; } .toast-report { background:#E24B4A; color:#fff; }
+    .loading { text-align:center; padding:2rem; color:var(--text-secondary); font-size:14px; }
+    .loading i { font-size:28px; display:block; margin-bottom:8px; animation:spin 1s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .pill { font-size:11px; padding:3px 8px; border-radius:20px; font-weight:500; }
+    .pill-examen{background:#EEEDFE;color:#3C3489;} .pill-any{background:#E8F4FD;color:#0C4A6E;}
+    .pill-test{background:#FAEEDA;color:#633806;} .pill-redaccio{background:#E1F5EE;color:#085041;}
+    .pill-vf{background:#FEF3C7;color:#78350F;} .pill-autor{background:var(--bg-secondary);color:var(--text-secondary);}
+    .pill-noresp{background:var(--bg-secondary);color:var(--text-tertiary);font-style:italic;}
+    .pill-reportada{background:#FCEBEB;color:#A32D2D;border:0.5px solid #F7C1C1;}
+    .empty-state { text-align:center; padding:3rem 1rem; color:var(--text-tertiary); }
+    .empty-state i { font-size:40px; display:block; margin-bottom:10px; }
+    .empty-state p { font-size:14px; line-height:1.6; }
+    .page-title { font-size:24px; font-weight:600; margin-bottom:4px; }
+    .page-sub { font-size:14px; color:var(--text-secondary); margin-bottom:1.5rem; }
+    .assignatures-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:1rem; }
+    .assignatura-card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; cursor:pointer; display:flex; align-items:center; gap:14px; transition:background 0.1s; }
+    .assignatura-card:hover { background:var(--bg-secondary); border-color:var(--border-secondary); }
+    .asg-emoji { width:46px; height:46px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+    .asg-body { flex:1; min-width:0; } .asg-nom { font-size:15px; font-weight:500; margin-bottom:3px; } .asg-meta { font-size:12px; color:var(--text-secondary); }
+    .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:1.5rem; }
+    .stat { background:var(--bg-secondary); border-radius:var(--radius-md); padding:12px 14px; }
+    .stat-val { font-size:24px; font-weight:600; } .stat-lbl { font-size:12px; color:var(--text-secondary); margin-top:2px; }
+    .menu-grid { display:flex; flex-direction:column; gap:10px; }
+    .menu-card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1.1rem 1.25rem; cursor:pointer; display:flex; align-items:center; gap:14px; transition:background 0.1s; }
+    .menu-card:hover { background:var(--bg-secondary); }
+    .m-icon { width:44px; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+    .ic-add{background:#EEEDFE;color:#534AB7;} .ic-view{background:#E1F5EE;color:#0F6E56;} .ic-quiz{background:#FAEEDA;color:#854F0B;}
+    .m-body{flex:1;} .m-title{font-size:15px;font-weight:500;margin-bottom:2px;} .m-desc{font-size:13px;color:var(--text-secondary);}
+    .m-count{font-size:12px;font-weight:500;background:var(--bg-secondary);padding:3px 10px;border-radius:20px;color:var(--text-secondary);white-space:nowrap;}
+    .type-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem;}
+    .type-btn{border:0.5px solid var(--border);background:var(--bg);border-radius:var(--radius-md);padding:10px 8px;cursor:pointer;text-align:center;font-size:13px;color:var(--text-secondary);display:flex;flex-direction:column;align-items:center;gap:6px;font-family:inherit;}
+    .type-btn i{font-size:20px;} .type-btn span{font-weight:500;} .type-btn small{font-size:11px;color:var(--text-tertiary);line-height:1.3;}
+    .type-btn.selected{border-color:#534AB7;background:#EEEDFE;color:#3C3489;} .type-btn.selected small{color:#7F77DD;}
+    .resp-bloc{display:none;} .resp-bloc.active{display:block;}
+    .opcions-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+    .opcio-row{display:flex;align-items:center;gap:8px;}
+    .opcio-lletra{width:28px;height:28px;border-radius:50%;background:var(--bg-secondary);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-secondary);}
+    .opcio-row input[type=text]{flex:1;}
+    .radio-correcta{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);flex-shrink:0;cursor:pointer;}
+    .opcio-row.correcta-sel .opcio-lletra{background:#E1F5EE;color:#085041;}
+    .hint-correcta{font-size:12px;color:var(--text-tertiary);margin-top:6px;}
+    .vf-label{display:flex;align-items:center;gap:8px;padding:10px 18px;border:0.5px solid var(--border);border-radius:var(--radius-md);cursor:pointer;flex:1;font-size:14px;}
+    .filters-row{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;}
+    .filters-row input{flex:2;min-width:120px;padding:8px 12px;border:0.5px solid var(--border);border-radius:var(--radius-md);background:var(--bg);color:var(--text);font-size:14px;font-family:inherit;outline:none;}
+    .filters-row input:focus{border-color:#534AB7;}
+    .filters-row select{flex:1;min-width:100px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--radius-md);background:var(--bg);color:var(--text);font-size:13px;font-family:inherit;outline:none;}
+    .q-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:10px;}
+    .q-card.reportada{border-color:#F7C1C1;background:#FFF8F8;}
+    .q-num{font-size:11px;color:var(--text-tertiary);margin-bottom:4px;}
+    .q-text{font-size:15px;font-weight:500;margin-bottom:8px;line-height:1.5;}
+    .q-answer{background:var(--bg-secondary);border-radius:var(--radius-md);padding:10px 12px;font-size:14px;color:var(--text-secondary);margin-bottom:8px;display:none;}
+    .q-answer.vis{display:block;}
+    .q-opcions{margin-bottom:8px;display:none;flex-direction:column;gap:4px;}
+    .q-opcions.vis{display:flex;}
+    .q-op{font-size:13px;padding:6px 10px;border-radius:var(--radius-md);background:var(--bg-secondary);}
+    .q-op.ok{background:#E1F5EE;color:#085041;font-weight:500;}
+    .q-footer{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:6px;}
+    .q-actions{display:flex;gap:4px;align-items:center;margin-left:auto;}
+    .q-report-banner{background:#FCEBEB;border-radius:var(--radius-md);padding:8px 12px;margin-bottom:8px;font-size:13px;color:#791F1F;display:flex;gap:8px;align-items:flex-start;}
+    .emoji-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+    .emoji-opt{font-size:22px;padding:5px 7px;border-radius:var(--radius-md);cursor:pointer;border:2px solid transparent;}
+    .emoji-opt:hover{background:var(--bg-secondary);} .emoji-opt.sel{border-color:#534AB7;background:#EEEDFE;}
+    .color-picker{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+    .color-opt{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;outline:2px solid transparent;}
+    .color-opt.sel{outline:2px solid var(--text);outline-offset:2px;}
+    .quiz-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .mode-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem 1rem;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;transition:background 0.1s;}
+    .mode-card:hover{background:var(--bg-secondary);border-color:var(--border-secondary);}
+    .mode-icon{width:54px;height:54px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:26px;}
+    .mode-ic-test{background:#EEEDFE;color:#534AB7;} .mode-ic-card{background:#E1F5EE;color:#0F6E56;}
+    .mode-name{font-size:15px;font-weight:600;} .mode-desc{font-size:12px;color:var(--text-secondary);line-height:1.5;}
+    .progress-bar{height:5px;background:var(--bg-secondary);border-radius:3px;margin-bottom:1.25rem;}
+    .progress-fill{height:5px;background:#534AB7;border-radius:3px;transition:width 0.3s;}
+    .quiz-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--text-secondary);margin-bottom:8px;}
+    .test-q{font-size:17px;font-weight:500;line-height:1.5;margin-bottom:1.25rem;}
+    .test-options{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem;}
+    .test-opt{background:var(--bg);border:0.5px solid var(--border-secondary);border-radius:var(--radius-md);padding:12px 16px;font-size:14px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;font-family:inherit;transition:background 0.1s;}
+    .test-opt:hover:not(:disabled){background:var(--bg-secondary);}
+    .test-opt.correct{background:#E1F5EE;border-color:#1D9E75;color:#085041;}
+    .test-opt.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F;}
+    .opt-letter{width:26px;height:26px;border-radius:50%;background:var(--bg-secondary);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .test-opt.correct .opt-letter{background:#1D9E75;color:#fff;}
+    .test-opt.wrong .opt-letter{background:#E24B4A;color:#fff;}
+    .test-feedback{border-radius:var(--radius-md);padding:10px 14px;font-size:14px;margin-bottom:1rem;display:none;font-weight:500;}
+    .test-feedback.show{display:block;} .test-feedback.ok{background:#E1F5EE;color:#085041;} .test-feedback.ko{background:#FCEBEB;color:#791F1F;}
+    .flashcard-wrap{perspective:1000px;margin-bottom:1.25rem;}
+    .flashcard{width:100%;min-height:220px;position:relative;transform-style:preserve-3d;transition:transform 0.5s;cursor:pointer;}
+    .flashcard.flipped{transform:rotateY(180deg);}
+    .fc-face{position:absolute;width:100%;min-height:220px;backface-visibility:hidden;border-radius:var(--radius-lg);border:0.5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;}
+    .fc-front{background:var(--bg);} .fc-back{background:#EEEDFE;border-color:#AFA9EC;transform:rotateY(180deg);}
+    .fc-label{font-size:11px;color:var(--text-tertiary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;}
+    .fc-back .fc-label{color:#7F77DD;} .fc-text{font-size:18px;font-weight:500;line-height:1.5;} .fc-back .fc-text{color:#26215C;}
+    .fc-hint{font-size:12px;color:var(--text-tertiary);margin-top:14px;}
+    .btn-ok{background:#E1F5EE;color:#085041;border:none;border-radius:var(--radius-md);padding:11px 0;font-size:14px;font-weight:500;cursor:pointer;flex:1;font-family:inherit;}
+    .btn-ok:hover{background:#9FE1CB;}
+    .btn-ko{background:#FCEBEB;color:#791F1F;border:none;border-radius:var(--radius-md);padding:11px 0;font-size:14px;font-weight:500;cursor:pointer;flex:1;font-family:inherit;}
+    .btn-ko:hover{background:#F7C1C1;} .self-btns{display:flex;gap:8px;}
+    .result-wrap{text-align:center;padding:1.5rem 0 2rem;}
+    .result-circle{width:110px;height:110px;border-radius:50%;background:#EEEDFE;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1.25rem;}
+    .result-num{font-size:34px;font-weight:600;color:#534AB7;line-height:1;} .result-den{font-size:14px;color:#7F77DD;}
+    .result-msg{font-size:20px;font-weight:600;margin-bottom:6px;} .result-sub{font-size:14px;color:var(--text-secondary);margin-bottom:1.5rem;}
+    .result-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem;}
+    .modal-overlay.show{display:flex;}
+    .modal{background:var(--bg);border-radius:var(--radius-lg);padding:1.5rem;width:100%;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
+    .modal h3{font-size:17px;font-weight:600;margin-bottom:6px;} .modal-sub{font-size:13px;color:var(--text-secondary);margin-bottom:1.25rem;font-style:italic;}
+    .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:1.25rem;}
+    .motius-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;}
+    .motiu-opt{border:0.5px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:10px;background:var(--bg);font-family:inherit;transition:all 0.1s;}
+    .motiu-opt:hover{background:var(--bg-secondary);} .motiu-opt.sel{border-color:#E24B4A;background:#FCEBEB;color:#791F1F;}
+    .motiu-opt i{font-size:16px;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="screen active" id="s-inici">
+    <p class="page-title">Repositori de Preguntes</p>
+    <p class="page-sub">Selecciona una assignatura per accedir al repositori</p>
+    <div class="assignatures-grid" id="asg-grid"><div class="loading"><i class="ti ti-loader"></i>Carregant assignatures...</div></div>
+    <button class="btn-nova" onclick="obrirModal()"><i class="ti ti-plus"></i> Nova assignatura</button>
+  </div>
+
+  <div class="screen" id="s-assignatura">
+    <div class="topbar">
+      <button class="back-btn" onclick="go('s-inici')"><i class="ti ti-arrow-left"></i> Assignatures</button>
+      <h2 id="asg-titol-top"></h2>
+      <button class="btn-icon" onclick="eliminarAssignatura()"><i class="ti ti-trash"></i></button>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-val" id="asg-st-total">0</div><div class="stat-lbl">Preguntes</div></div>
+      <div class="stat"><div class="stat-val" id="asg-st-anys">0</div><div class="stat-lbl">Anys</div></div>
+      <div class="stat"><div class="stat-val" id="asg-st-errors">0</div><div class="stat-lbl">Errors reportats</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="go('s-afegir')">
+        <div class="m-icon ic-add"><i class="ti ti-circle-plus"></i></div>
+        <div class="m-body"><div class="m-title">Introduir pregunta</div><div class="m-desc">Afegeix el que recordes de l'examen</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--text-tertiary)"></i>
+      </div>
+      <div class="menu-card" onclick="go('s-veure')">
+        <div class="m-icon ic-view"><i class="ti ti-list"></i></div>
+        <div class="m-body"><div class="m-title">Veure totes les preguntes</div><div class="m-desc">Consulta i estudia el repositori</div></div>
+        <span class="m-count" id="asg-count-badge">0 preguntes</span>
+      </div>
+      <div class="menu-card" onclick="go('s-quiz-mode')">
+        <div class="m-icon ic-quiz"><i class="ti ti-brain"></i></div>
+        <div class="m-body"><div class="m-title">Fer un quiz</div><div class="m-desc">Test d'opcions o targetes de memòria</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--text-tertiary)"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="s-afegir">
+    <div class="topbar">
+      <button class="back-btn" onclick="go('s-assignatura')"><i class="ti ti-arrow-left"></i> Tornar</button>
+      <h2>Introduir pregunta</h2>
+    </div>
+    <div class="toast toast-ok" id="toast">Pregunta afegida — gràcies per contribuir!</div>
+    <div class="card">
+      <div class="field">
+        <label>Pregunta *</label>
+        <textarea id="f-preg" placeholder="Escriu la pregunta tal com la recordes..." oninput="updateBtn();countChars(this,'cc-preg',300)" style="min-height:90px;"></textarea>
+        <div class="char-count" id="cc-preg">0 / 300</div>
+      </div>
+      <hr class="divider">
+      <div class="field" style="margin-bottom:10px;">
+        <label>Tipus de resposta</label>
+        <div class="type-selector">
+          <div class="type-btn selected" id="tb-sense" onclick="selTipus('sense')"><i class="ti ti-minus"></i><span>Sense resposta</span><small>Només la pregunta</small></div>
+          <div class="type-btn" id="tb-redaccio" onclick="selTipus('redaccio')"><i class="ti ti-pencil"></i><span>Redactada</span><small>Resposta de desenvolupament</small></div>
+          <div class="type-btn" id="tb-test" onclick="selTipus('test')"><i class="ti ti-list-check"></i><span>Opcions múltiples</span><small>Pregunta tipus test</small></div>
+          <div class="type-btn" id="tb-vf" onclick="selTipus('vf')"><i class="ti ti-toggle-left"></i><span>Vertader / Fals</span><small>Afirmació V/F</small></div>
+        </div>
+      </div>
+      <div class="resp-bloc" id="bloc-sense"></div>
+      <div class="resp-bloc" id="bloc-redaccio">
+        <div class="field"><label>Resposta redactada</label><textarea id="f-resp-text" placeholder="Escriu la resposta completa..." style="min-height:80px;"></textarea></div>
+      </div>
+      <div class="resp-bloc" id="bloc-test">
+        <div class="field">
+          <label>Opcions <span style="color:var(--text-tertiary);font-size:11px;">(marca la correcta)</span></label>
+          <div class="opcions-list">
+            <div class="opcio-row" id="op-0"><div class="opcio-lletra">A</div><input type="text" placeholder="Opció A" id="op-text-0"/><label class="radio-correcta"><input type="radio" name="correcta" value="0" onchange="marcaCorrecta(0)"/> Correcta</label></div>
+            <div class="opcio-row" id="op-1"><div class="opcio-lletra">B</div><input type="text" placeholder="Opció B" id="op-text-1"/><label class="radio-correcta"><input type="radio" name="correcta" value="1" onchange="marcaCorrecta(1)"/> Correcta</label></div>
+            <div class="opcio-row" id="op-2"><div class="opcio-lletra">C</div><input type="text" placeholder="Opció C" id="op-text-2"/><label class="radio-correcta"><input type="radio" name="correcta" value="2" onchange="marcaCorrecta(2)"/> Correcta</label></div>
+            <div class="opcio-row" id="op-3"><div class="opcio-lletra">D</div><input type="text" placeholder="Opció D" id="op-text-3"/><label class="radio-correcta"><input type="radio" name="correcta" value="3" onchange="marcaCorrecta(3)"/> Correcta</label></div>
+          </div>
+          <p class="hint-correcta">Marca quina és la resposta correcta</p>
+        </div>
+      </div>
+      <div class="resp-bloc" id="bloc-vf">
+        <div class="field"><label>La afirmació és...</label>
+          <div style="display:flex;gap:10px;margin-top:4px;">
+            <label class="vf-label" id="vf-v-lbl"><input type="radio" name="vf" value="V" onchange="document.getElementById('vf-v-lbl').style.background='#E1F5EE';document.getElementById('vf-f-lbl').style.background='';"> ✅ Vertadera</label>
+            <label class="vf-label" id="vf-f-lbl"><input type="radio" name="vf" value="F" onchange="document.getElementById('vf-f-lbl').style.background='#FCEBEB';document.getElementById('vf-v-lbl').style.background='';"> ❌ Falsa</label>
+          </div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="row3">
+        <div class="field"><label>📅 Any de l'examen</label><input type="number" id="f-any" placeholder="Ex: 2024" min="2000" max="2099"/></div>
+        <div class="field"><label>📄 Examen / Parcial</label><input type="text" id="f-examen" placeholder="Ex: Parcial 1..."/></div>
+        <div class="field"><label>👤 El teu nom</label><input type="text" id="f-autor" placeholder="Opcional"/></div>
+      </div>
+      <div class="form-footer"><button class="btn-primary" id="btn-afegir" onclick="afegir()" disabled>Afegir al repositori</button></div>
+    </div>
+    <p style="font-size:12px;color:var(--text-tertiary);text-align:center;">Les preguntes les veuran tots els companys del curs</p>
+  </div>
+
+  <div class="screen" id="s-veure">
+    <div class="topbar">
+      <button class="back-btn" onclick="go('s-assignatura')"><i class="ti ti-arrow-left"></i> Tornar</button>
+      <h2>Totes les preguntes</h2>
+    </div>
+    <div class="toast toast-report" id="toast-report">Error reportat — gràcies!</div>
+    <div class="filters-row">
+      <input type="text" id="cerca" placeholder="🔍 Cerca per paraula clau..." oninput="renderLlista()"/>
+      <select id="filtre-any" onchange="renderLlista()"><option value="">Tots els anys</option></select>
+      <select id="filtre-examen" onchange="renderLlista()"><option value="">Tots els exàmens</option></select>
+    </div>
+    <div id="resum-filtres" style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;"></div>
+    <div id="llista"></div>
+  </div>
+
+  <div class="screen" id="s-quiz-mode">
+    <div class="topbar"><button class="back-btn" onclick="go('s-assignatura')"><i class="ti ti-arrow-left"></i> Tornar</button><h2>Tria modalitat</h2></div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:1.25rem;">Com vols estudiar avui?</p>
+    <div class="quiz-mode-grid">
+      <div class="mode-card" onclick="iniciarTest()"><div class="mode-icon mode-ic-test"><i class="ti ti-list-check"></i></div><div class="mode-name">Test</div><div class="mode-desc">4 opcions per pregunta. Tria la correcta.</div></div>
+      <div class="mode-card" onclick="iniciarTargetes()"><div class="mode-icon mode-ic-card"><i class="ti ti-cards"></i></div><div class="mode-name">Targetes</div><div class="mode-desc">Gira la targeta per veure la resposta.</div></div>
+    </div>
+  </div>
+  <div class="screen" id="s-test"><div class="topbar"><button class="back-btn" onclick="go('s-quiz-mode')"><i class="ti ti-arrow-left"></i> Modalitats</button><h2>Test</h2></div><div id="test-cos"></div></div>
+  <div class="screen" id="s-targetes"><div class="topbar"><button class="back-btn" onclick="go('s-quiz-mode')"><i class="ti ti-arrow-left"></i> Modalitats</button><h2>Targetes</h2></div><div id="targetes-cos"></div></div>
+</div>
+
+<!-- MODAL NOVA ASSIGNATURA -->
+<div class="modal-overlay" id="modal-asg">
+  <div class="modal">
+    <h3>Nova assignatura</h3>
+    <div class="field" style="margin-top:1rem;"><label>Nom *</label><input type="text" id="m-nom" placeholder="Ex: Gestió empresarial..."/></div>
+    <div class="field"><label>Icona</label><div class="emoji-picker" id="emoji-picker"></div></div>
+    <div class="field"><label>Color</label><div class="color-picker" id="color-picker"></div></div>
+    <div class="modal-footer"><button class="btn-sec" onclick="tancarModal('modal-asg')">Cancel·lar</button><button class="btn-primary" onclick="crearAssignatura()">Crear</button></div>
+  </div>
+</div>
+
+<!-- MODAL REPORTAR -->
+<div class="modal-overlay" id="modal-report">
+  <div class="modal">
+    <h3>⚠️ Reportar un error</h3>
+    <p class="modal-sub" id="report-preg-preview"></p>
+    <div class="field"><label>Quin és el problema?</label>
+      <div class="motius-grid">
+        <button class="motiu-opt" id="motiu-0" onclick="selMotiu(0)"><i class="ti ti-question-mark"></i> La pregunta no és correcta</button>
+        <button class="motiu-opt" id="motiu-1" onclick="selMotiu(1)"><i class="ti ti-x"></i> La resposta és incorrecta</button>
+        <button class="motiu-opt" id="motiu-2" onclick="selMotiu(2)"><i class="ti ti-copy"></i> Pregunta duplicada</button>
+        <button class="motiu-opt" id="motiu-3" onclick="selMotiu(3)"><i class="ti ti-dots"></i> Altre motiu</button>
+      </div>
+    </div>
+    <div class="field"><label>Comentari (opcional)</label><textarea id="report-comentari" placeholder="Ex: La resposta correcta hauria de ser..." style="min-height:70px;"></textarea></div>
+    <div class="modal-footer"><button class="btn-sec" onclick="tancarModal('modal-report')">Cancel·lar</button><button class="btn-primary" id="btn-report" onclick="enviarReport()" disabled>Enviar</button></div>
+  </div>
+</div>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCuD5tHm_MsiRoG4kcMtfU60XgyrbWBw2M",
+    authDomain: "repositori-de-preguntes.firebaseapp.com",
+    projectId: "repositori-de-preguntes",
+    storageBucket: "repositori-de-preguntes.firebasestorage.app",
+    messagingSenderId: "724476271140",
+    appId: "1:724476271140:web:5be3c229c82daf4b3316b1",
+    measurementId: "G-51PB8V2BMG"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const avui = new Date().toLocaleDateString('ca-ES');
+  const anyActual = new Date().getFullYear();
+  const EMOJIS = ['📚','📖','✏️','🧮','🔬','🧪','💻','📊','📐','🌍','⚗️','🎨','🏛️','💡','📝','🔢','🧠','📈'];
+  const COLORS = ['#EEEDFE','#E1F5EE','#FAEEDA','#FCE8E8','#E8F4FD','#F0FDF4','#FDF4FF','#FFF7ED'];
+  const MOTIUS = ["La pregunta no és correcta","La resposta és incorrecta","Pregunta duplicada","Altre motiu"];
+  let emojiSel = EMOJIS[0], colorSel = COLORS[0];
+  let assignatures = [];
+  let preguntes = [];
+  let asgActualId = null;
+  let tipusActual = 'sense', correctaIdx = -1;
+  let reportPregId = null, motiuSel = -1;
+  let test = { preguntes:[], index:0, correctes:0 };
+  let targetes = { preguntes:[], index:0, correctes:0, incorrectes:0, girada:false };
+
+  function getAsg() { return assignatures.find(a => a.id === asgActualId); }
+  function getPreguntesAsg() { return preguntes.filter(p => p.assignaturaId === asgActualId); }
+
+  // CARREGAR ASSIGNATURES EN TEMPS REAL
+  const qAsg = query(collection(db, 'assignatures'), orderBy('nom'));
+  onSnapshot(qAsg, (snap) => {
+    assignatures = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (document.getElementById('s-inici').classList.contains('active')) renderInici();
+    if (asgActualId) {
+      const a = getAsg();
+      if (a) {
+        const p = getPreguntesAsg();
+        document.getElementById('asg-st-total').textContent = p.length;
+        document.getElementById('asg-st-anys').textContent = [...new Set(p.map(x=>x.any).filter(Boolean))].length;
+        document.getElementById('asg-st-errors').textContent = p.filter(x=>x.reports&&x.reports.length).length;
+        document.getElementById('asg-count-badge').textContent = p.length + (p.length===1?' pregunta':' preguntes');
+      }
+    }
+  });
+
+  // CARREGAR PREGUNTES EN TEMPS REAL
+  const qPreg = query(collection(db, 'preguntes'), orderBy('data', 'desc'));
+  onSnapshot(qPreg, (snap) => {
+    preguntes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (document.getElementById('s-veure').classList.contains('active')) renderLlista();
+    if (asgActualId) {
+      const p = getPreguntesAsg();
+      document.getElementById('asg-st-total').textContent = p.length;
+      document.getElementById('asg-st-anys').textContent = [...new Set(p.map(x=>x.any).filter(Boolean))].length;
+      document.getElementById('asg-st-errors').textContent = p.filter(x=>x.reports&&x.reports.length).length;
+      document.getElementById('asg-count-badge').textContent = p.length + (p.length===1?' pregunta':' preguntes');
+    }
+  });
+
+  function renderInici() {
+    const grid = document.getElementById('asg-grid');
+    if (!assignatures.length) {
+      grid.innerHTML = `<div class="empty-state"><i class="ti ti-books"></i><p>Encara no hi ha assignatures.<br>Crea'n una per començar!</p></div>`;
+      return;
+    }
+    grid.innerHTML = assignatures.map(a => {
+      const p = preguntes.filter(x => x.assignaturaId === a.id);
+      const anys = [...new Set(p.map(x=>x.any).filter(Boolean))].length;
+      return `<div class="assignatura-card" onclick="entrarAssignatura('${a.id}')">
+        <div class="asg-emoji" style="background:${a.color}">${a.emoji}</div>
+        <div class="asg-body">
+          <div class="asg-nom">${a.nom}</div>
+          <div class="asg-meta">${p.length} pregunta${p.length!==1?'s':''} · ${anys} any${anys!==1?'s':''}</div>
+        </div>
+        <i class="ti ti-chevron-right" style="color:var(--text-tertiary)"></i>
+      </div>`;
+    }).join('');
+  }
+
+  window.entrarAssignatura = function(id) {
+    asgActualId = id;
+    const a = getAsg();
+    const p = getPreguntesAsg();
+    document.getElementById('asg-titol-top').textContent = a.emoji + ' ' + a.nom;
+    document.getElementById('asg-st-total').textContent = p.length;
+    document.getElementById('asg-st-anys').textContent = [...new Set(p.map(x=>x.any).filter(Boolean))].length;
+    document.getElementById('asg-st-errors').textContent = p.filter(x=>x.reports&&x.reports.length).length;
+    document.getElementById('asg-count-badge').textContent = p.length + (p.length===1?' pregunta':' preguntes');
+    go('s-assignatura');
+  }
+
+  window.eliminarAssignatura = async function() {
+    if (!confirm(`Eliminar "${getAsg().nom}"? S'esborraran totes les seves preguntes.`)) return;
+    const p = getPreguntesAsg();
+    for (const preg of p) await deleteDoc(doc(db, 'preguntes', preg.id));
+    await deleteDoc(doc(db, 'assignatures', asgActualId));
+    go('s-inici');
+  }
+
+  window.go = function(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (id === 's-inici') renderInici();
+    if (id === 's-veure') renderLlista();
+    if (id === 's-afegir') document.getElementById('f-any').value = anyActual;
+  }
+
+  window.obrirModal = function() {
+    document.getElementById('emoji-picker').innerHTML = EMOJIS.map(e => `<div class="emoji-opt${e===emojiSel?' sel':''}" onclick="selEmoji('${e}',this)">${e}</div>`).join('');
+    document.getElementById('color-picker').innerHTML = COLORS.map(c => `<div class="color-opt${c===colorSel?' sel':''}" style="background:${c}" onclick="selColor('${c}',this)"></div>`).join('');
+    document.getElementById('m-nom').value = '';
+    document.getElementById('modal-asg').classList.add('show');
+    setTimeout(() => document.getElementById('m-nom').focus(), 100);
+  }
+
+  window.tancarModal = function(id) { document.getElementById(id).classList.remove('show'); }
+  window.selEmoji = function(e, el) { emojiSel=e; document.querySelectorAll('.emoji-opt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
+  window.selColor = function(c, el) { colorSel=c; document.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
+
+  window.crearAssignatura = async function() {
+    const nom = document.getElementById('m-nom').value.trim();
+    if (!nom) { document.getElementById('m-nom').focus(); return; }
+    await addDoc(collection(db, 'assignatures'), { nom, emoji: emojiSel, color: colorSel, data: avui });
+    tancarModal('modal-asg');
+  }
+
+  window.countChars = function(el, outId, max) { document.getElementById(outId).textContent = el.value.length + ' / ' + max; }
+  window.updateBtn = function() { document.getElementById('btn-afegir').disabled = !document.getElementById('f-preg').value.trim(); }
+  window.selTipus = function(t) { tipusActual=t; ['sense','redaccio','test','vf'].forEach(x=>{ document.getElementById('tb-'+x).classList.toggle('selected',x===t); document.getElementById('bloc-'+x).classList.toggle('active',x===t); }); }
+  window.marcaCorrecta = function(idx) { correctaIdx=idx; for(let i=0;i<4;i++){ const r=document.getElementById('op-'+i); if(r) r.classList.toggle('correcta-sel',i===idx); } }
+
+  window.afegir = async function() {
+    const preg = document.getElementById('f-preg').value.trim(); if (!preg) return;
+    const anyVal = parseInt(document.getElementById('f-any').value) || null;
+    let nova = { preg, tipusResp: tipusActual, autor: document.getElementById('f-autor').value.trim(), examen: document.getElementById('f-examen').value.trim(), any: anyVal, data: avui, assignaturaId: asgActualId, reports: [] };
+    if (tipusActual==='redaccio') nova.resp = document.getElementById('f-resp-text').value.trim();
+    else if (tipusActual==='test') { nova.opcions=[0,1,2,3].map(i=>document.getElementById('op-text-'+i).value.trim()).filter(Boolean); nova.correcta=correctaIdx; }
+    else if (tipusActual==='vf') { const s=document.querySelector('input[name="vf"]:checked'); nova.respVF=s?s.value:''; }
+    await addDoc(collection(db, 'preguntes'), nova);
+    document.getElementById('f-preg').value=''; document.getElementById('cc-preg').textContent='0 / 300';
+    if(tipusActual==='redaccio') document.getElementById('f-resp-text').value='';
+    if(tipusActual==='test'){ [0,1,2,3].forEach(i=>{ document.getElementById('op-text-'+i).value=''; document.getElementById('op-'+i).classList.remove('correcta-sel'); }); document.querySelectorAll('input[name="correcta"]').forEach(r=>r.checked=false); correctaIdx=-1; }
+    if(tipusActual==='vf'){ document.querySelectorAll('input[name="vf"]').forEach(r=>r.checked=false); document.getElementById('vf-v-lbl').style.background=''; document.getElementById('vf-f-lbl').style.background=''; }
+    ['f-examen','f-autor'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('f-any').value = anyActual;
+    document.getElementById('btn-afegir').disabled=true; selTipus('sense');
+    const t=document.getElementById('toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);
+  }
+
+  function renderLlista() {
+    const p = getPreguntesAsg();
+    const cerca = document.getElementById('cerca').value.toLowerCase();
+    const filtreAny = document.getElementById('filtre-any').value;
+    const filtreExamen = document.getElementById('filtre-examen').value;
+    const selAny = document.getElementById('filtre-any'); const actualAny = selAny.value;
+    const anys = [...new Set(p.map(x=>x.any).filter(Boolean))].sort((a,b)=>b-a);
+    selAny.innerHTML = '<option value="">Tots els anys</option>' + anys.map(a=>`<option value="${a}" ${String(a)===actualAny?'selected':''}>${a}</option>`).join('');
+    selAny.value = actualAny;
+    const selEx = document.getElementById('filtre-examen'); const actualEx = selEx.value;
+    const exs = [...new Set(p.map(x=>x.examen).filter(Boolean))];
+    selEx.innerHTML = '<option value="">Tots els exàmens</option>' + exs.map(e=>`<option value="${e}" ${e===actualEx?'selected':''}>${e}</option>`).join('');
+    selEx.value = actualEx;
+    let filtrades = p.filter(x => {
+      const ok = x.preg.toLowerCase().includes(cerca) || (x.resp||'').toLowerCase().includes(cerca);
+      return ok && (!filtreAny||String(x.any)===filtreAny) && (!filtreExamen||x.examen===filtreExamen);
+    });
+    const resum = document.getElementById('resum-filtres');
+    const fa = []; if(filtreAny) fa.push(`Any: ${filtreAny}`); if(filtreExamen) fa.push(`Examen: ${filtreExamen}`); if(cerca) fa.push(`"${cerca}"`);
+    resum.textContent = fa.length ? `Filtrant per: ${fa.join(' · ')} — ${filtrades.length} resultat${filtrades.length!==1?'s':''}` : `${filtrades.length} pregunta${filtrades.length!==1?'s':''}`;
+    const ll = ['A','B','C','D'];
+    const llista = document.getElementById('llista');
+    if (!filtrades.length) { llista.innerHTML=`<div class="empty-state"><i class="ti ti-mood-empty"></i><p>${cerca||filtreAny||filtreExamen?'Cap resultat per a aquests filtres.':'Encara no hi ha preguntes!<br>Sigues el primer a afegir-ne una.'}</p></div>`; return; }
+    llista.innerHTML = filtrades.map((p,i) => {
+      let respHTML = '';
+      if(p.tipusResp==='redaccio'&&p.resp) respHTML=`<div class="q-answer" id="qa-${p.id}">${p.resp}</div>`;
+      else if(p.tipusResp==='test'&&p.opcions) respHTML=`<div class="q-opcions" id="qa-${p.id}">${p.opcions.map((o,oi)=>`<div class="q-op ${oi===p.correcta?'ok':''}">${ll[oi]}. ${o}${oi===p.correcta?' ✓':''}</div>`).join('')}</div>`;
+      else if(p.tipusResp==='vf'&&p.respVF) respHTML=`<div class="q-answer" id="qa-${p.id}">${p.respVF==='V'?'✅ Vertadera':'❌ Falsa'}</div>`;
+      const teResp = p.tipusResp!=='sense';
+      const pillTipus = p.tipusResp==='test'?'<span class="pill pill-test">Test</span>':p.tipusResp==='redaccio'?'<span class="pill pill-redaccio">Redacció</span>':p.tipusResp==='vf'?'<span class="pill pill-vf">V/F</span>':'';
+      const teReports = p.reports&&p.reports.length>0;
+      const banners = teReports ? p.reports.map(r=>`<div class="q-report-banner"><i class="ti ti-alert-triangle"></i><div><strong>${r.motiu}</strong>${r.comentari?`<br>${r.comentari}`:''}</div></div>`).join('') : '';
+      return `<div class="q-card${teReports?' reportada':''}" id="qcard-${p.id}">
+        <div class="q-num">Pregunta ${i+1} de ${filtrades.length}</div>
+        ${banners}
+        <div class="q-text">${p.preg}</div>
+        ${respHTML}
+        <div class="q-footer">
+          ${p.any?`<span class="pill pill-any">📅 ${p.any}</span>`:''}
+          ${p.examen?`<span class="pill pill-examen">${p.examen}</span>`:''}
+          ${pillTipus}
+          ${p.autor?`<span class="pill pill-autor">👤 ${p.autor}</span>`:''}
+          ${teReports?`<span class="pill pill-reportada">⚠️ ${p.reports.length} error${p.reports.length>1?'s':''}</span>`:''}
+          <div class="q-actions">
+            ${teResp?`<button class="btn-sm" onclick="toggleQ('${p.id}',this)">Veure resposta</button>`:'<span class="pill pill-noresp">Sense resposta</span>'}
+            <button class="btn-report" onclick="obrirReport('${p.id}')" title="Reportar error">⚠️</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  window.toggleQ = function(id, btn) { const el=document.getElementById('qa-'+id); const v=el.classList.toggle('vis'); btn.textContent=v?'Amagar':'Veure resposta'; }
+
+  window.obrirReport = function(pregId) {
+    reportPregId = pregId; motiuSel = -1;
+    const p = preguntes.find(x => x.id === pregId);
+    document.getElementById('report-preg-preview').textContent = '"' + p.preg.substring(0,80) + (p.preg.length>80?'...':'"');
+    document.querySelectorAll('.motiu-opt').forEach(m => m.classList.remove('sel'));
+    document.getElementById('report-comentari').value = '';
+    document.getElementById('btn-report').disabled = true;
+    document.getElementById('modal-report').classList.add('show');
+  }
+
+  window.selMotiu = function(idx) { motiuSel=idx; document.querySelectorAll('.motiu-opt').forEach((m,i)=>m.classList.toggle('sel',i===idx)); document.getElementById('btn-report').disabled=false; }
+
+  window.enviarReport = async function() {
+    if (motiuSel < 0) return;
+    const p = preguntes.find(x => x.id === reportPregId);
+    const reports = [...(p.reports||[]), { motiu:MOTIUS[motiuSel], comentari:document.getElementById('report-comentari').value.trim(), data:avui }];
+    await updateDoc(doc(db, 'preguntes', reportPregId), { reports });
+    tancarModal('modal-report');
+    const t=document.getElementById('toast-report'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
+  }
+
+  window.iniciarTest = function() {
+    const p = getPreguntesAsg().filter(x=>x.tipusResp!=='sense');
+    if (p.length<2) { alert('Necessites almenys 2 preguntes amb resposta per fer el test.'); return; }
+    const allResps = p.filter(x=>x.tipusResp==='redaccio'&&x.resp).map(x=>x.resp);
+    test.preguntes = p.sort(()=>Math.random()-0.5).map(x=>{
+      if(x.tipusResp==='test') return {...x,quizOpcions:x.opcions,quizCorrecta:x.correcta};
+      if(x.tipusResp==='vf') return {...x,quizOpcions:['Vertadera','Falsa'],quizCorrecta:x.respVF==='V'?0:1};
+      const dist=allResps.filter(r=>r!==x.resp).sort(()=>Math.random()-0.5).slice(0,3);
+      const barr=[x.resp,...dist].sort(()=>Math.random()-0.5);
+      return {...x,quizOpcions:barr,quizCorrecta:barr.indexOf(x.resp)};
+    });
+    test.index=0; test.correctes=0; go('s-test'); renderTest();
+  }
+
+  function renderTest() {
+    const cos = document.getElementById('test-cos');
+    if (test.index>=test.preguntes.length) {
+      const pct=Math.round((test.correctes/test.preguntes.length)*100);
+      const msg=pct>=80?'Excel·lent! 🏆':pct>=60?'Molt bé! 👍':pct>=40?'Segueix practicant 💪':'Cal repassar més 📚';
+      cos.innerHTML=`<div class="result-wrap"><div class="result-circle"><div class="result-num">${test.correctes}</div><div class="result-den">de ${test.preguntes.length}</div></div><div class="result-msg">${msg}</div><div class="result-sub">${pct}% de respostes correctes</div><div class="result-btns"><button class="btn-sec" onclick="go('s-quiz-mode')">Canviar modalitat</button><button class="btn-primary" onclick="iniciarTest()">Repetir</button></div></div>`; return;
+    }
+    const p=test.preguntes[test.index]; const pct=Math.round((test.index/test.preguntes.length)*100); const l=['A','B','C','D'];
+    cos.innerHTML=`<div class="quiz-meta"><span>Pregunta ${test.index+1} de ${test.preguntes.length}</span><span>${test.correctes} correctes</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="card">${p.any?`<div style="margin-bottom:8px"><span class="pill pill-any">📅 ${p.any}</span>${p.examen?` <span class="pill pill-examen">${p.examen}</span>`:''}</div>`:p.examen?`<div style="margin-bottom:8px"><span class="pill pill-examen">${p.examen}</span></div>`:''}<div class="test-q">${p.preg}</div><div class="test-options">${p.quizOpcions.map((o,i)=>`<button class="test-opt" onclick="triarOpcio(this,${i},${p.quizCorrecta})"><span class="opt-letter">${l[i]}</span>${o}</button>`).join('')}</div><div class="test-feedback" id="test-fb"></div><div style="display:flex;justify-content:flex-end" id="test-next"></div></div>`;
+  }
+
+  window.triarOpcio = function(btn,idx,correcta) {
+    document.querySelectorAll('.test-opt').forEach(o=>o.disabled=true);
+    const ok=idx===correcta;
+    if(ok){btn.classList.add('correct');test.correctes++;}else{btn.classList.add('wrong');document.querySelectorAll('.test-opt')[correcta].classList.add('correct');}
+    const fb=document.getElementById('test-fb'); fb.textContent=ok?'✅ Correcte!':'❌ Incorrecte — la resposta correcta és la marcada en verd.'; fb.className='test-feedback show '+(ok?'ok':'ko');
+    document.getElementById('test-next').innerHTML=`<button class="btn-primary" onclick="test.index++;renderTest()">${test.index+1<test.preguntes.length?'Següent →':'Veure resultats'}</button>`;
+  }
+
+  window.iniciarTargetes = function() {
+    const p = getPreguntesAsg().filter(x=>x.tipusResp!=='sense');
+    if (!p.length) { alert('Necessites almenys 1 pregunta amb resposta.'); return; }
+    targetes.preguntes=p.sort(()=>Math.random()-0.5); targetes.index=0; targetes.correctes=0; targetes.incorrectes=0; targetes.girada=false;
+    go('s-targetes'); renderTargetes();
+  }
+
+  function renderTargetes() {
+    const cos=document.getElementById('targetes-cos');
+    if(targetes.index>=targetes.preguntes.length){
+      const total=targetes.correctes+targetes.incorrectes; const pct=total>0?Math.round((targetes.correctes/total)*100):0;
+      const msg=pct>=80?'Excel·lent! 🏆':pct>=60?'Molt bé! 👍':pct>=40?'Segueix practicant 💪':'Cal repassar més 📚';
+      cos.innerHTML=`<div class="result-wrap"><div class="result-circle"><div class="result-num">${targetes.correctes}</div><div class="result-den">de ${total}</div></div><div class="result-msg">${msg}</div><div class="result-sub">${pct}% · ${targetes.preguntes.length} targetes</div><div class="result-btns"><button class="btn-sec" onclick="go('s-quiz-mode')">Canviar modalitat</button><button class="btn-primary" onclick="iniciarTargetes()">Repetir</button></div></div>`; return;
+    }
+    const p=targetes.preguntes[targetes.index]; const pct=Math.round((targetes.index/targetes.preguntes.length)*100); const l=['A','B','C','D'];
+    let rd=''; if(p.tipusResp==='redaccio') rd=p.resp||''; else if(p.tipusResp==='test'&&p.opcions) rd=`${l[p.correcta]}. ${p.opcions[p.correcta]}`; else if(p.tipusResp==='vf') rd=p.respVF==='V'?'✅ Vertadera':'❌ Falsa';
+    cos.innerHTML=`<div class="quiz-meta"><span>Targeta ${targetes.index+1} de ${targetes.preguntes.length}</span><span>✓ ${targetes.correctes} · ✗ ${targetes.incorrectes}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="flashcard-wrap"><div class="flashcard" id="fc" onclick="girarTargeta()"><div class="fc-face fc-front"><div class="fc-label">Pregunta</div><div class="fc-text">${p.preg}</div><div class="fc-hint">👆 Clica per veure la resposta</div></div><div class="fc-face fc-back"><div class="fc-label">Resposta</div><div class="fc-text">${rd}</div><div class="fc-hint">Com t'ha anat?</div></div></div></div><div id="fc-self" style="display:none"><div class="self-btns"><button class="btn-ko" onclick="puntarTargeta(false)">✗ No ho sabia</button><button class="btn-ok" onclick="puntarTargeta(true)">✓ Ho sabia</button></div></div>`;
+  }
+
+  window.girarTargeta = function() { if(targetes.girada) return; document.getElementById('fc').classList.add('flipped'); document.getElementById('fc-self').style.display='block'; targetes.girada=true; }
+  window.puntarTargeta = function(ok) { if(ok) targetes.correctes++; else targetes.incorrectes++; targetes.index++; targetes.girada=false; renderTargetes(); }
+
+  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('show'); }));
+</script>
+</body>
+</html>
