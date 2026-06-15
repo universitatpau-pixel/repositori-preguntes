@@ -7,14 +7,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #ffffff; --bg-secondary: #f5f5f5; --border: #e0e0e0; --border-secondary: #d0d0d0;
-      --text: #111111; --text-secondary: #555555; --text-tertiary: #999999;
-      --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg:#1a1a1a; --bg-secondary:#252525; --border:#333333; --border-secondary:#444444; --text:#f0f0f0; --text-secondary:#aaaaaa; --text-tertiary:#666666; }
-    }
+    :root { --bg:#ffffff; --bg-secondary:#f5f5f5; --border:#e0e0e0; --border-secondary:#d0d0d0; --text:#111111; --text-secondary:#555555; --text-tertiary:#999999; --radius-md:8px; --radius-lg:12px; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#1a1a1a; --bg-secondary:#252525; --border:#333333; --border-secondary:#444444; --text:#f0f0f0; --text-secondary:#aaaaaa; --text-tertiary:#666666; } }
     body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg-secondary); color:var(--text); min-height:100vh; font-size:16px; }
     .container { max-width:640px; margin:0 auto; padding:1.5rem 1rem; }
     .screen { display:none; } .screen.active { display:block; }
@@ -28,7 +22,7 @@
     .field { margin-bottom:14px; }
     .field label { display:block; font-size:13px; color:var(--text-secondary); margin-bottom:5px; font-weight:500; }
     .field input,.field textarea,.field select { width:100%; padding:9px 12px; border:0.5px solid var(--border); border-radius:var(--radius-md); background:var(--bg); color:var(--text); font-size:14px; font-family:inherit; outline:none; transition:border-color 0.15s; }
-    .field input:focus,.field textarea:focus,.field select:focus { border-color:#534AB7; }
+    .field input:focus,.field textarea:focus { border-color:#534AB7; }
     .field textarea { resize:vertical; min-height:70px; }
     .char-count { font-size:11px; color:var(--text-tertiary); text-align:right; margin-top:3px; }
     .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -46,7 +40,7 @@
     .btn-report { background:none; border:none; cursor:pointer; color:#E24B4A; font-size:17px; padding:4px 6px; border-radius:var(--radius-md); }
     .btn-report:hover { background:#FCEBEB; }
     .toast { font-size:14px; padding:10px 18px; border-radius:var(--radius-md); text-align:center; margin-bottom:1rem; display:none; font-weight:500; }
-    .toast.show { display:block; } .toast-ok { background:#1D9E75; color:#fff; } .toast-report { background:#E24B4A; color:#fff; }
+    .toast.show { display:block; } .toast-ok { background:#1D9E75; color:#fff; } .toast-report { background:#E24B4A; color:#fff; } .toast-copy { background:#534AB7; color:#fff; }
     .loading { text-align:center; padding:2rem; color:var(--text-secondary); font-size:14px; }
     .loading i { font-size:28px; display:block; margin-bottom:8px; animation:spin 1s linear infinite; }
     @keyframes spin { to { transform:rotate(360deg); } }
@@ -56,6 +50,9 @@
     .pill-vf{background:#FEF3C7;color:#78350F;} .pill-autor{background:var(--bg-secondary);color:var(--text-secondary);}
     .pill-noresp{background:var(--bg-secondary);color:var(--text-tertiary);font-style:italic;}
     .pill-reportada{background:#FCEBEB;color:#A32D2D;border:0.5px solid #F7C1C1;}
+    .badge-privada{font-size:10px;background:#1a1a2e;color:#a78bfa;padding:2px 7px;border-radius:20px;font-weight:500;display:inline-flex;align-items:center;gap:3px;}
+    .badge-publica{font-size:10px;background:#E1F5EE;color:#085041;padding:2px 7px;border-radius:20px;font-weight:500;display:inline-flex;align-items:center;gap:3px;}
+    .badge-desblocada{font-size:10px;background:#E1F5EE;color:#085041;padding:2px 7px;border-radius:20px;font-weight:500;display:inline-flex;align-items:center;gap:3px;}
     .empty-state { text-align:center; padding:3rem 1rem; color:var(--text-tertiary); }
     .empty-state i { font-size:40px; display:block; margin-bottom:10px; }
     .empty-state p { font-size:14px; line-height:1.6; }
@@ -63,9 +60,11 @@
     .page-sub { font-size:14px; color:var(--text-secondary); margin-bottom:1.5rem; }
     .assignatures-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:1rem; }
     .assignatura-card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; cursor:pointer; display:flex; align-items:center; gap:14px; transition:background 0.1s; }
-    .assignatura-card:hover { background:var(--bg-secondary); border-color:var(--border-secondary); }
+    .assignatura-card:hover { background:var(--bg-secondary); }
     .asg-emoji { width:46px; height:46px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
-    .asg-body { flex:1; min-width:0; } .asg-nom { font-size:15px; font-weight:500; margin-bottom:3px; } .asg-meta { font-size:12px; color:var(--text-secondary); }
+    .asg-body { flex:1; min-width:0; }
+    .asg-nom { font-size:15px; font-weight:500; margin-bottom:3px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .asg-meta { font-size:12px; color:var(--text-secondary); }
     .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:1.5rem; }
     .stat { background:var(--bg-secondary); border-radius:var(--radius-md); padding:12px 14px; }
     .stat-val { font-size:24px; font-weight:600; } .stat-lbl { font-size:12px; color:var(--text-secondary); margin-top:2px; }
@@ -73,7 +72,7 @@
     .menu-card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1.1rem 1.25rem; cursor:pointer; display:flex; align-items:center; gap:14px; transition:background 0.1s; }
     .menu-card:hover { background:var(--bg-secondary); }
     .m-icon { width:44px; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
-    .ic-add{background:#EEEDFE;color:#534AB7;} .ic-view{background:#E1F5EE;color:#0F6E56;} .ic-quiz{background:#FAEEDA;color:#854F0B;}
+    .ic-add{background:#EEEDFE;color:#534AB7;} .ic-view{background:#E1F5EE;color:#0F6E56;} .ic-quiz{background:#FAEEDA;color:#854F0B;} .ic-share{background:#E8F4FD;color:#0C4A6E;}
     .m-body{flex:1;} .m-title{font-size:15px;font-weight:500;margin-bottom:2px;} .m-desc{font-size:13px;color:var(--text-secondary);}
     .m-count{font-size:12px;font-weight:500;background:var(--bg-secondary);padding:3px 10px;border-radius:20px;color:var(--text-secondary);white-space:nowrap;}
     .type-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem;}
@@ -112,9 +111,37 @@
     .color-picker{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
     .color-opt{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;outline:2px solid transparent;}
     .color-opt.sel{outline:2px solid var(--text);outline-offset:2px;}
+    .visibilitat-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+    .vis-btn{border:0.5px solid var(--border);background:var(--bg);border-radius:var(--radius-md);padding:12px 10px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:inherit;transition:all 0.1s;}
+    .vis-btn i{font-size:22px;} .vis-btn span{font-size:13px;font-weight:500;} .vis-btn small{font-size:11px;color:var(--text-tertiary);line-height:1.3;}
+    .vis-btn.sel-publica{border-color:#1D9E75;background:#E1F5EE;} .vis-btn.sel-publica i,.vis-btn.sel-publica span{color:#085041;}
+    .vis-btn.sel-privada{border-color:#534AB7;background:#EEEDFE;} .vis-btn.sel-privada i,.vis-btn.sel-privada span{color:#3C3489;}
+    .privada-config{background:var(--bg-secondary);border-radius:var(--radius-md);padding:1rem;margin-top:8px;display:none;}
+    .privada-config.show{display:block;}
+    .privada-config p{font-size:12px;color:var(--text-secondary);margin-bottom:10px;line-height:1.5;}
+    .pass-input-wrap{position:relative;}
+    .pass-input-wrap input{padding-right:44px;}
+    .pass-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-tertiary);font-size:16px;}
+    .accés-wrap{text-align:center;padding:0.5rem 0 1rem;}
+    .accés-wrap .asg-emoji-big{font-size:52px;margin-bottom:12px;display:block;}
+    .accés-wrap h2{font-size:20px;font-weight:500;margin-bottom:6px;}
+    .accés-wrap p{font-size:14px;color:var(--text-secondary);margin-bottom:1.5rem;line-height:1.6;}
+    .codi-input{text-align:center;font-size:22px;font-family:monospace;letter-spacing:6px;font-weight:700;text-transform:uppercase;}
+    .error-msg{font-size:13px;color:#E24B4A;margin-top:6px;display:none;text-align:center;}
+    .error-msg.show{display:block;}
+    .share-panel{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;}
+    .share-panel h4{font-size:15px;font-weight:500;margin-bottom:4px;}
+    .share-panel p{font-size:13px;color:var(--text-secondary);margin-bottom:1rem;line-height:1.5;}
+    .share-label{font-size:11px;color:var(--text-tertiary);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;}
+    .link-box{background:var(--bg-secondary);border:0.5px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+    .link-text{font-size:12px;color:var(--text-secondary);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;}
+    .codi-box{background:#1a1a2e;border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .codi-text{font-family:monospace;font-size:20px;font-weight:700;color:#a78bfa;letter-spacing:4px;}
+    .btn-copy{background:none;border:0.5px solid #534AB7;border-radius:var(--radius-md);padding:5px 12px;font-size:12px;color:#a78bfa;cursor:pointer;font-family:inherit;white-space:nowrap;}
+    .btn-copy:hover{background:#534AB7;color:#fff;}
     .quiz-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
     .mode-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem 1rem;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;transition:background 0.1s;}
-    .mode-card:hover{background:var(--bg-secondary);border-color:var(--border-secondary);}
+    .mode-card:hover{background:var(--bg-secondary);}
     .mode-icon{width:54px;height:54px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:26px;}
     .mode-ic-test{background:#EEEDFE;color:#534AB7;} .mode-ic-card{background:#E1F5EE;color:#0F6E56;}
     .mode-name{font-size:15px;font-weight:600;} .mode-desc{font-size:12px;color:var(--text-secondary);line-height:1.5;}
@@ -162,11 +189,34 @@
 </head>
 <body>
 <div class="container">
+
   <div class="screen active" id="s-inici">
     <p class="page-title">Repositori de Preguntes</p>
     <p class="page-sub">Selecciona una assignatura per accedir al repositori</p>
-    <div class="assignatures-grid" id="asg-grid"><div class="loading"><i class="ti ti-loader"></i>Carregant assignatures...</div></div>
-    <button class="btn-nova" onclick="obrirModal()"><i class="ti ti-plus"></i> Nova assignatura</button>
+    <div class="assignatures-grid" id="asg-grid"><div class="loading"><i class="ti ti-loader"></i>Carregant...</div></div>
+    <button class="btn-nova" onclick="obrirModalNova()"><i class="ti ti-plus"></i> Nova assignatura</button>
+  </div>
+
+  <div class="screen" id="s-acces">
+    <div class="topbar">
+      <button class="back-btn" onclick="go('s-inici')"><i class="ti ti-arrow-left"></i> Tornar</button>
+      <h2>Accés privat</h2>
+    </div>
+    <div class="card">
+      <div class="accés-wrap">
+        <span class="asg-emoji-big" id="acces-emoji"></span>
+        <h2 id="acces-nom"></h2>
+        <p>Aquesta assignatura és privada.<br>Introdueix el codi d'accés per entrar.</p>
+        <div class="field">
+          <div class="pass-input-wrap">
+            <input type="password" id="acces-input" class="codi-input" placeholder="· · · · · ·" maxlength="30" oninput="this.value=this.value.toUpperCase()" />
+            <button class="pass-toggle" onclick="togglePass('acces-input',this)"><i class="ti ti-eye"></i></button>
+          </div>
+          <div class="error-msg" id="acces-error">❌ Codi incorrecte. Torna-ho a intentar.</div>
+        </div>
+        <button class="btn-primary" onclick="verificarAcces()" style="width:100%;margin-top:8px;">Accedir</button>
+      </div>
+    </div>
   </div>
 
   <div class="screen" id="s-assignatura">
@@ -196,6 +246,33 @@
         <div class="m-body"><div class="m-title">Fer un quiz</div><div class="m-desc">Test d'opcions o targetes de memòria</div></div>
         <i class="ti ti-chevron-right" style="color:var(--text-tertiary)"></i>
       </div>
+      <div class="menu-card" id="menu-compartir" style="display:none;" onclick="go('s-compartir')">
+        <div class="m-icon ic-share"><i class="ti ti-share"></i></div>
+        <div class="m-body"><div class="m-title">Compartir assignatura</div><div class="m-desc">Obtén el link o codi d'accés</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--text-tertiary)"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="s-compartir">
+    <div class="topbar">
+      <button class="back-btn" onclick="go('s-assignatura')"><i class="ti ti-arrow-left"></i> Tornar</button>
+      <h2>Compartir assignatura</h2>
+    </div>
+    <div class="toast toast-copy" id="toast-copy">✅ Copiat al porta-retalls!</div>
+    <div class="share-panel">
+      <h4>🔗 Link directe</h4>
+      <p>Qui obri aquest link entrarà directament sense haver d'introduir cap codi.</p>
+      <div class="share-label">Link amb accés automàtic</div>
+      <div class="link-box"><span class="link-text" id="link-directe"></span><button class="btn-copy" onclick="copiarText(document.getElementById('link-directe').textContent)">Copiar</button></div>
+    </div>
+    <div class="share-panel">
+      <h4>🔐 Codi d'accés manual</h4>
+      <p>Comparteix el codi amb els teus companys. L'hauran d'introduir per accedir.</p>
+      <div class="share-label">Codi</div>
+      <div class="codi-box"><span class="codi-text" id="codi-share"></span><button class="btn-copy" onclick="copiarText(document.getElementById('codi-share').textContent)">Copiar codi</button></div>
+      <div class="share-label">Missatge llest per enviar per WhatsApp</div>
+      <div class="link-box"><span class="link-text" id="missatge-share"></span><button class="btn-copy" onclick="copiarText(document.getElementById('missatge-share').textContent)">Copiar</button></div>
     </div>
   </div>
 
@@ -204,7 +281,7 @@
       <button class="back-btn" onclick="go('s-assignatura')"><i class="ti ti-arrow-left"></i> Tornar</button>
       <h2>Introduir pregunta</h2>
     </div>
-    <div class="toast toast-ok" id="toast">Pregunta afegida — gràcies per contribuir!</div>
+    <div class="toast toast-ok" id="toast">Pregunta afegida — gràcies!</div>
     <div class="card">
       <div class="field">
         <label>Pregunta *</label>
@@ -222,9 +299,7 @@
         </div>
       </div>
       <div class="resp-bloc" id="bloc-sense"></div>
-      <div class="resp-bloc" id="bloc-redaccio">
-        <div class="field"><label>Resposta redactada</label><textarea id="f-resp-text" placeholder="Escriu la resposta completa..." style="min-height:80px;"></textarea></div>
-      </div>
+      <div class="resp-bloc" id="bloc-redaccio"><div class="field"><label>Resposta redactada</label><textarea id="f-resp-text" placeholder="Escriu la resposta completa..." style="min-height:80px;"></textarea></div></div>
       <div class="resp-bloc" id="bloc-test">
         <div class="field">
           <label>Opcions <span style="color:var(--text-tertiary);font-size:11px;">(marca la correcta)</span></label>
@@ -247,23 +322,19 @@
       </div>
       <hr class="divider">
       <div class="row3">
-        <div class="field"><label>📅 Any de l'examen</label><input type="number" id="f-any" placeholder="Ex: 2024" min="2000" max="2099"/></div>
-        <div class="field"><label>📄 Examen / Parcial</label><input type="text" id="f-examen" placeholder="Ex: Parcial 1..."/></div>
-        <div class="field"><label>👤 El teu nom</label><input type="text" id="f-autor" placeholder="Opcional"/></div>
+        <div class="field"><label>📅 Any</label><input type="number" id="f-any" placeholder="Ex: 2024" min="2000" max="2099"/></div>
+        <div class="field"><label>📄 Examen</label><input type="text" id="f-examen" placeholder="Ex: Parcial 1..."/></div>
+        <div class="field"><label>👤 Nom</label><input type="text" id="f-autor" placeholder="Opcional"/></div>
       </div>
       <div class="form-footer"><button class="btn-primary" id="btn-afegir" onclick="afegir()" disabled>Afegir al repositori</button></div>
     </div>
-    <p style="font-size:12px;color:var(--text-tertiary);text-align:center;">Les preguntes les veuran tots els companys del curs</p>
   </div>
 
   <div class="screen" id="s-veure">
-    <div class="topbar">
-      <button class="back-btn" onclick="go('s-assignatura')"><i class="ti ti-arrow-left"></i> Tornar</button>
-      <h2>Totes les preguntes</h2>
-    </div>
+    <div class="topbar"><button class="back-btn" onclick="go('s-assignatura')"><i class="ti ti-arrow-left"></i> Tornar</button><h2>Totes les preguntes</h2></div>
     <div class="toast toast-report" id="toast-report">Error reportat — gràcies!</div>
     <div class="filters-row">
-      <input type="text" id="cerca" placeholder="🔍 Cerca per paraula clau..." oninput="renderLlista()"/>
+      <input type="text" id="cerca" placeholder="🔍 Cerca..." oninput="renderLlista()"/>
       <select id="filtre-any" onchange="renderLlista()"><option value="">Tots els anys</option></select>
       <select id="filtre-examen" onchange="renderLlista()"><option value="">Tots els exàmens</option></select>
     </div>
@@ -284,13 +355,27 @@
 </div>
 
 <!-- MODAL NOVA ASSIGNATURA -->
-<div class="modal-overlay" id="modal-asg">
+<div class="modal-overlay" id="modal-nova">
   <div class="modal">
     <h3>Nova assignatura</h3>
     <div class="field" style="margin-top:1rem;"><label>Nom *</label><input type="text" id="m-nom" placeholder="Ex: Gestió empresarial..."/></div>
     <div class="field"><label>Icona</label><div class="emoji-picker" id="emoji-picker"></div></div>
     <div class="field"><label>Color</label><div class="color-picker" id="color-picker"></div></div>
-    <div class="modal-footer"><button class="btn-sec" onclick="tancarModal('modal-asg')">Cancel·lar</button><button class="btn-primary" onclick="crearAssignatura()">Crear</button></div>
+    <hr class="divider">
+    <div class="field">
+      <label>Visibilitat</label>
+      <div class="visibilitat-selector">
+        <div class="vis-btn sel-publica" id="vb-publica" onclick="selVis('publica')"><i class="ti ti-world"></i><span>Pública</span><small>Qualsevol pot accedir sense contrasenya</small></div>
+        <div class="vis-btn" id="vb-privada" onclick="selVis('privada')"><i class="ti ti-lock"></i><span>Privada</span><small>Necessita codi d'accés per entrar</small></div>
+      </div>
+      <div class="privada-config" id="privada-config">
+        <p>🔐 Crea una contrasenya que compartiràs amb els teus companys.</p>
+        <div class="field" style="margin-bottom:0;"><label>Contrasenya d'accés *</label>
+          <div class="pass-input-wrap"><input type="password" id="m-pass" placeholder="Ex: GESTIO2024" oninput="this.value=this.value.toUpperCase()"/><button class="pass-toggle" onclick="togglePass('m-pass',this)"><i class="ti ti-eye"></i></button></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn-sec" onclick="tancarModal('modal-nova')">Cancel·lar</button><button class="btn-primary" style="width:auto;" onclick="crearAssignatura()">Crear assignatura</button></div>
   </div>
 </div>
 
@@ -312,10 +397,9 @@
   </div>
 </div>
 
-<!-- FIREBASE SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCuD5tHm_MsiRoG4kcMtfU60XgyrbWBw2M",
@@ -323,74 +407,80 @@
     projectId: "repositori-de-preguntes",
     storageBucket: "repositori-de-preguntes.firebasestorage.app",
     messagingSenderId: "724476271140",
-    appId: "1:724476271140:web:5be3c229c82daf4b3316b1",
-    measurementId: "G-51PB8V2BMG"
+    appId: "1:724476271140:web:5be3c229c82daf4b3316b1"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-
   const avui = new Date().toLocaleDateString('ca-ES');
   const anyActual = new Date().getFullYear();
+  const BASE_URL = window.location.origin + window.location.pathname;
   const EMOJIS = ['📚','📖','✏️','🧮','🔬','🧪','💻','📊','📐','🌍','⚗️','🎨','🏛️','💡','📝','🔢','🧠','📈'];
   const COLORS = ['#EEEDFE','#E1F5EE','#FAEEDA','#FCE8E8','#E8F4FD','#F0FDF4','#FDF4FF','#FFF7ED'];
   const MOTIUS = ["La pregunta no és correcta","La resposta és incorrecta","Pregunta duplicada","Altre motiu"];
-  let emojiSel = EMOJIS[0], colorSel = COLORS[0];
-  let assignatures = [];
-  let preguntes = [];
-  let asgActualId = null;
-  let tipusActual = 'sense', correctaIdx = -1;
-  let reportPregId = null, motiuSel = -1;
-  let test = { preguntes:[], index:0, correctes:0 };
-  let targetes = { preguntes:[], index:0, correctes:0, incorrectes:0, girada:false };
+  let emojiSel=EMOJIS[0], colorSel=COLORS[0], visSel='publica';
+  let assignatures=[], preguntes=[], asgActualId=null;
+  let tipusActual='sense', correctaIdx=-1, reportPregId=null, motiuSel=-1;
+  let test={preguntes:[],index:0,correctes:0};
+  let targetes={preguntes:[],index:0,correctes:0,incorrectes:0,girada:false};
+  const sessionsDesblocades = new Set();
 
-  function getAsg() { return assignatures.find(a => a.id === asgActualId); }
-  function getPreguntesAsg() { return preguntes.filter(p => p.assignaturaId === asgActualId); }
+  function getAsg(){ return assignatures.find(a=>a.id===asgActualId); }
+  function getPreguntesAsg(){ return preguntes.filter(p=>p.assignaturaId===asgActualId); }
+  function getLinkDirecte(a){ return `${BASE_URL}?asg=${a.id}&key=${encodeURIComponent(a.contrasenya||'')}`; }
 
-  // CARREGAR ASSIGNATURES EN TEMPS REAL
-  const qAsg = query(collection(db, 'assignatures'), orderBy('nom'));
-  onSnapshot(qAsg, (snap) => {
-    assignatures = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    if (document.getElementById('s-inici').classList.contains('active')) renderInici();
-    if (asgActualId) {
-      const a = getAsg();
-      if (a) {
-        const p = getPreguntesAsg();
-        document.getElementById('asg-st-total').textContent = p.length;
-        document.getElementById('asg-st-anys').textContent = [...new Set(p.map(x=>x.any).filter(Boolean))].length;
-        document.getElementById('asg-st-errors').textContent = p.filter(x=>x.reports&&x.reports.length).length;
-        document.getElementById('asg-count-badge').textContent = p.length + (p.length===1?' pregunta':' preguntes');
+  // Comprovar si ve d'un link d'invitació
+  function comprovarLinkInvitacio(){
+    const params = new URLSearchParams(window.location.search);
+    const asgParam = params.get('asg');
+    const keyParam = params.get('key');
+    if(asgParam && keyParam){
+      const a = assignatures.find(x=>x.id===asgParam);
+      if(a && a.visibilitat==='privada' && decodeURIComponent(keyParam).toUpperCase()===a.contrasenya.toUpperCase()){
+        sessionsDesblocades.add(asgParam);
+        asgActualId = asgParam;
+        mostrarAssignatura();
+        return true;
       }
     }
+    return false;
+  }
+
+  onSnapshot(query(collection(db,'assignatures'),orderBy('nom')), snap=>{
+    assignatures = snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(document.getElementById('s-inici').classList.contains('active')) renderInici();
+    if(asgActualId){ actualitzarStatsAsg(); }
   });
 
-  // CARREGAR PREGUNTES EN TEMPS REAL
-  const qPreg = query(collection(db, 'preguntes'), orderBy('data', 'desc'));
-  onSnapshot(qPreg, (snap) => {
-    preguntes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    if (document.getElementById('s-veure').classList.contains('active')) renderLlista();
-    if (asgActualId) {
-      const p = getPreguntesAsg();
-      document.getElementById('asg-st-total').textContent = p.length;
-      document.getElementById('asg-st-anys').textContent = [...new Set(p.map(x=>x.any).filter(Boolean))].length;
-      document.getElementById('asg-st-errors').textContent = p.filter(x=>x.reports&&x.reports.length).length;
-      document.getElementById('asg-count-badge').textContent = p.length + (p.length===1?' pregunta':' preguntes');
-    }
+  onSnapshot(query(collection(db,'preguntes'),orderBy('data','desc')), snap=>{
+    preguntes = snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(document.getElementById('s-veure').classList.contains('active')) renderLlista();
+    if(asgActualId) actualitzarStatsAsg();
+    // Comprovar link invitació quan les dades estiguin carregades
+    if(assignatures.length>0) comprovarLinkInvitacio();
   });
 
-  function renderInici() {
-    const grid = document.getElementById('asg-grid');
-    if (!assignatures.length) {
-      grid.innerHTML = `<div class="empty-state"><i class="ti ti-books"></i><p>Encara no hi ha assignatures.<br>Crea'n una per començar!</p></div>`;
-      return;
-    }
-    grid.innerHTML = assignatures.map(a => {
-      const p = preguntes.filter(x => x.assignaturaId === a.id);
-      const anys = [...new Set(p.map(x=>x.any).filter(Boolean))].length;
+  function actualitzarStatsAsg(){
+    const p=getPreguntesAsg();
+    document.getElementById('asg-st-total').textContent=p.length;
+    document.getElementById('asg-st-anys').textContent=[...new Set(p.map(x=>x.any).filter(Boolean))].length;
+    document.getElementById('asg-st-errors').textContent=p.filter(x=>x.reports&&x.reports.length).length;
+    document.getElementById('asg-count-badge').textContent=p.length+(p.length===1?' pregunta':' preguntes');
+  }
+
+  function renderInici(){
+    const grid=document.getElementById('asg-grid');
+    if(!assignatures.length){ grid.innerHTML=`<div class="empty-state"><i class="ti ti-books"></i><p>Encara no hi ha assignatures.<br>Crea'n una per començar!</p></div>`; return; }
+    grid.innerHTML=assignatures.map(a=>{
+      const p=preguntes.filter(x=>x.assignaturaId===a.id);
+      const anys=[...new Set(p.map(x=>x.any).filter(Boolean))].length;
+      const desblocada=sessionsDesblocades.has(a.id);
       return `<div class="assignatura-card" onclick="entrarAssignatura('${a.id}')">
         <div class="asg-emoji" style="background:${a.color}">${a.emoji}</div>
         <div class="asg-body">
-          <div class="asg-nom">${a.nom}</div>
+          <div class="asg-nom">${a.nom}
+            ${a.visibilitat==='privada'&&!desblocada?`<span class="badge-privada"><i class="ti ti-lock" style="font-size:9px"></i> Privada</span>`:a.visibilitat==='privada'&&desblocada?`<span class="badge-desblocada"><i class="ti ti-lock-open" style="font-size:9px"></i> Desblocada</span>`:`<span class="badge-publica"><i class="ti ti-world" style="font-size:9px"></i> Pública</span>`}
+          </div>
           <div class="asg-meta">${p.length} pregunta${p.length!==1?'s':''} · ${anys} any${anys!==1?'s':''}</div>
         </div>
         <i class="ti ti-chevron-right" style="color:var(--text-tertiary)"></i>
@@ -398,113 +488,151 @@
     }).join('');
   }
 
-  window.entrarAssignatura = function(id) {
-    asgActualId = id;
-    const a = getAsg();
-    const p = getPreguntesAsg();
-    document.getElementById('asg-titol-top').textContent = a.emoji + ' ' + a.nom;
-    document.getElementById('asg-st-total').textContent = p.length;
-    document.getElementById('asg-st-anys').textContent = [...new Set(p.map(x=>x.any).filter(Boolean))].length;
-    document.getElementById('asg-st-errors').textContent = p.filter(x=>x.reports&&x.reports.length).length;
-    document.getElementById('asg-count-badge').textContent = p.length + (p.length===1?' pregunta':' preguntes');
+  window.entrarAssignatura = function(id){
+    asgActualId=id;
+    const a=getAsg();
+    if(a.visibilitat==='privada'&&!sessionsDesblocades.has(id)){
+      document.getElementById('acces-emoji').textContent=a.emoji;
+      document.getElementById('acces-nom').textContent=a.nom;
+      document.getElementById('acces-input').value='';
+      document.getElementById('acces-error').classList.remove('show');
+      go('s-acces'); return;
+    }
+    mostrarAssignatura();
+  }
+
+  window.verificarAcces = function(){
+    const a=getAsg();
+    const input=document.getElementById('acces-input').value.trim().toUpperCase();
+    if(input===a.contrasenya.toUpperCase()){
+      sessionsDesblocades.add(asgActualId);
+      document.getElementById('acces-error').classList.remove('show');
+      mostrarAssignatura();
+    } else {
+      document.getElementById('acces-error').classList.add('show');
+      document.getElementById('acces-input').value='';
+      document.getElementById('acces-input').focus();
+    }
+  }
+
+  function mostrarAssignatura(){
+    const a=getAsg();
+    document.getElementById('asg-titol-top').textContent=a.emoji+' '+a.nom;
+    document.getElementById('menu-compartir').style.display=a.visibilitat==='privada'?'flex':'none';
+    actualitzarStatsAsg();
     go('s-assignatura');
   }
 
-  window.eliminarAssignatura = async function() {
-    if (!confirm(`Eliminar "${getAsg().nom}"? S'esborraran totes les seves preguntes.`)) return;
-    const p = getPreguntesAsg();
-    for (const preg of p) await deleteDoc(doc(db, 'preguntes', preg.id));
-    await deleteDoc(doc(db, 'assignatures', asgActualId));
+  window.eliminarAssignatura = async function(){
+    if(!confirm(`Eliminar "${getAsg().nom}"? S'esborraran totes les seves preguntes.`)) return;
+    const p=getPreguntesAsg();
+    for(const x of p) await deleteDoc(doc(db,'preguntes',x.id));
+    await deleteDoc(doc(db,'assignatures',asgActualId));
+    sessionsDesblocades.delete(asgActualId);
     go('s-inici');
   }
 
-  window.go = function(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  window.go = function(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    if (id === 's-inici') renderInici();
-    if (id === 's-veure') renderLlista();
-    if (id === 's-afegir') document.getElementById('f-any').value = anyActual;
+    if(id==='s-inici') renderInici();
+    if(id==='s-veure') renderLlista();
+    if(id==='s-afegir') document.getElementById('f-any').value=anyActual;
+    if(id==='s-compartir'){
+      const a=getAsg();
+      const link=getLinkDirecte(a);
+      document.getElementById('link-directe').textContent=link;
+      document.getElementById('codi-share').textContent=a.contrasenya||'';
+      document.getElementById('missatge-share').textContent=`Hola! T'invito a l'assignatura "${a.nom}" al Repositori de Preguntes. Entra directament: ${link}`;
+    }
   }
 
-  window.obrirModal = function() {
-    document.getElementById('emoji-picker').innerHTML = EMOJIS.map(e => `<div class="emoji-opt${e===emojiSel?' sel':''}" onclick="selEmoji('${e}',this)">${e}</div>`).join('');
-    document.getElementById('color-picker').innerHTML = COLORS.map(c => `<div class="color-opt${c===colorSel?' sel':''}" style="background:${c}" onclick="selColor('${c}',this)"></div>`).join('');
-    document.getElementById('m-nom').value = '';
-    document.getElementById('modal-asg').classList.add('show');
-    setTimeout(() => document.getElementById('m-nom').focus(), 100);
+  window.obrirModalNova = function(){
+    document.getElementById('emoji-picker').innerHTML=EMOJIS.map(e=>`<div class="emoji-opt${e===emojiSel?' sel':''}" onclick="selEmoji('${e}',this)">${e}</div>`).join('');
+    document.getElementById('color-picker').innerHTML=COLORS.map(c=>`<div class="color-opt${c===colorSel?' sel':''}" style="background:${c}" onclick="selColor('${c}',this)"></div>`).join('');
+    document.getElementById('m-nom').value=''; document.getElementById('m-pass').value='';
+    selVis('publica');
+    document.getElementById('modal-nova').classList.add('show');
+    setTimeout(()=>document.getElementById('m-nom').focus(),100);
   }
 
-  window.tancarModal = function(id) { document.getElementById(id).classList.remove('show'); }
-  window.selEmoji = function(e, el) { emojiSel=e; document.querySelectorAll('.emoji-opt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
-  window.selColor = function(c, el) { colorSel=c; document.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
+  window.tancarModal = function(id){ document.getElementById(id).classList.remove('show'); }
+  window.selEmoji = function(e,el){ emojiSel=e; document.querySelectorAll('.emoji-opt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
+  window.selColor = function(c,el){ colorSel=c; document.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
+  window.selVis = function(v){ visSel=v; document.getElementById('vb-publica').className='vis-btn'+(v==='publica'?' sel-publica':''); document.getElementById('vb-privada').className='vis-btn'+(v==='privada'?' sel-privada':''); document.getElementById('privada-config').classList.toggle('show',v==='privada'); }
+  window.togglePass = function(inputId,btn){ const input=document.getElementById(inputId); const show=input.type==='password'; input.type=show?'text':'password'; btn.innerHTML=show?'<i class="ti ti-eye-off"></i>':'<i class="ti ti-eye"></i>'; }
 
-  window.crearAssignatura = async function() {
-    const nom = document.getElementById('m-nom').value.trim();
-    if (!nom) { document.getElementById('m-nom').focus(); return; }
-    await addDoc(collection(db, 'assignatures'), { nom, emoji: emojiSel, color: colorSel, data: avui });
-    tancarModal('modal-asg');
+  window.crearAssignatura = async function(){
+    const nom=document.getElementById('m-nom').value.trim(); if(!nom) return;
+    let pass='';
+    if(visSel==='privada'){ pass=document.getElementById('m-pass').value.trim().toUpperCase(); if(!pass){ document.getElementById('m-pass').focus(); return; } }
+    const nova={ nom, emoji:emojiSel, color:colorSel, visibilitat:visSel, data:avui };
+    if(visSel==='privada') nova.contrasenya=pass;
+    const ref=await addDoc(collection(db,'assignatures'),nova);
+    if(visSel==='privada') sessionsDesblocades.add(ref.id);
+    tancarModal('modal-nova');
   }
 
-  window.countChars = function(el, outId, max) { document.getElementById(outId).textContent = el.value.length + ' / ' + max; }
-  window.updateBtn = function() { document.getElementById('btn-afegir').disabled = !document.getElementById('f-preg').value.trim(); }
-  window.selTipus = function(t) { tipusActual=t; ['sense','redaccio','test','vf'].forEach(x=>{ document.getElementById('tb-'+x).classList.toggle('selected',x===t); document.getElementById('bloc-'+x).classList.toggle('active',x===t); }); }
-  window.marcaCorrecta = function(idx) { correctaIdx=idx; for(let i=0;i<4;i++){ const r=document.getElementById('op-'+i); if(r) r.classList.toggle('correcta-sel',i===idx); } }
+  window.copiarText = function(text){
+    navigator.clipboard.writeText(text).then(()=>{
+      const t=document.getElementById('toast-copy'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000);
+    });
+  }
 
-  window.afegir = async function() {
-    const preg = document.getElementById('f-preg').value.trim(); if (!preg) return;
-    const anyVal = parseInt(document.getElementById('f-any').value) || null;
-    let nova = { preg, tipusResp: tipusActual, autor: document.getElementById('f-autor').value.trim(), examen: document.getElementById('f-examen').value.trim(), any: anyVal, data: avui, assignaturaId: asgActualId, reports: [] };
-    if (tipusActual==='redaccio') nova.resp = document.getElementById('f-resp-text').value.trim();
-    else if (tipusActual==='test') { nova.opcions=[0,1,2,3].map(i=>document.getElementById('op-text-'+i).value.trim()).filter(Boolean); nova.correcta=correctaIdx; }
-    else if (tipusActual==='vf') { const s=document.querySelector('input[name="vf"]:checked'); nova.respVF=s?s.value:''; }
-    await addDoc(collection(db, 'preguntes'), nova);
+  window.countChars = function(el,outId,max){ document.getElementById(outId).textContent=el.value.length+' / '+max; }
+  window.updateBtn = function(){ document.getElementById('btn-afegir').disabled=!document.getElementById('f-preg').value.trim(); }
+  window.selTipus = function(t){ tipusActual=t; ['sense','redaccio','test','vf'].forEach(x=>{ document.getElementById('tb-'+x).classList.toggle('selected',x===t); document.getElementById('bloc-'+x).classList.toggle('active',x===t); }); }
+  window.marcaCorrecta = function(idx){ correctaIdx=idx; for(let i=0;i<4;i++){ const r=document.getElementById('op-'+i); if(r) r.classList.toggle('correcta-sel',i===idx); } }
+
+  window.afegir = async function(){
+    const preg=document.getElementById('f-preg').value.trim(); if(!preg) return;
+    const anyVal=parseInt(document.getElementById('f-any').value)||null;
+    let nova={preg,tipusResp:tipusActual,autor:document.getElementById('f-autor').value.trim(),examen:document.getElementById('f-examen').value.trim(),any:anyVal,data:avui,assignaturaId:asgActualId,reports:[]};
+    if(tipusActual==='redaccio') nova.resp=document.getElementById('f-resp-text').value.trim();
+    else if(tipusActual==='test'){nova.opcions=[0,1,2,3].map(i=>document.getElementById('op-text-'+i).value.trim()).filter(Boolean);nova.correcta=correctaIdx;}
+    else if(tipusActual==='vf'){const s=document.querySelector('input[name="vf"]:checked');nova.respVF=s?s.value:'';}
+    await addDoc(collection(db,'preguntes'),nova);
     document.getElementById('f-preg').value=''; document.getElementById('cc-preg').textContent='0 / 300';
     if(tipusActual==='redaccio') document.getElementById('f-resp-text').value='';
-    if(tipusActual==='test'){ [0,1,2,3].forEach(i=>{ document.getElementById('op-text-'+i).value=''; document.getElementById('op-'+i).classList.remove('correcta-sel'); }); document.querySelectorAll('input[name="correcta"]').forEach(r=>r.checked=false); correctaIdx=-1; }
-    if(tipusActual==='vf'){ document.querySelectorAll('input[name="vf"]').forEach(r=>r.checked=false); document.getElementById('vf-v-lbl').style.background=''; document.getElementById('vf-f-lbl').style.background=''; }
+    if(tipusActual==='test'){[0,1,2,3].forEach(i=>{document.getElementById('op-text-'+i).value='';document.getElementById('op-'+i).classList.remove('correcta-sel');});document.querySelectorAll('input[name="correcta"]').forEach(r=>r.checked=false);correctaIdx=-1;}
+    if(tipusActual==='vf'){document.querySelectorAll('input[name="vf"]').forEach(r=>r.checked=false);document.getElementById('vf-v-lbl').style.background='';document.getElementById('vf-f-lbl').style.background='';}
     ['f-examen','f-autor'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('f-any').value = anyActual;
+    document.getElementById('f-any').value=anyActual;
     document.getElementById('btn-afegir').disabled=true; selTipus('sense');
     const t=document.getElementById('toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);
   }
 
-  function renderLlista() {
-    const p = getPreguntesAsg();
-    const cerca = document.getElementById('cerca').value.toLowerCase();
-    const filtreAny = document.getElementById('filtre-any').value;
-    const filtreExamen = document.getElementById('filtre-examen').value;
-    const selAny = document.getElementById('filtre-any'); const actualAny = selAny.value;
-    const anys = [...new Set(p.map(x=>x.any).filter(Boolean))].sort((a,b)=>b-a);
-    selAny.innerHTML = '<option value="">Tots els anys</option>' + anys.map(a=>`<option value="${a}" ${String(a)===actualAny?'selected':''}>${a}</option>`).join('');
-    selAny.value = actualAny;
-    const selEx = document.getElementById('filtre-examen'); const actualEx = selEx.value;
-    const exs = [...new Set(p.map(x=>x.examen).filter(Boolean))];
-    selEx.innerHTML = '<option value="">Tots els exàmens</option>' + exs.map(e=>`<option value="${e}" ${e===actualEx?'selected':''}>${e}</option>`).join('');
-    selEx.value = actualEx;
-    let filtrades = p.filter(x => {
-      const ok = x.preg.toLowerCase().includes(cerca) || (x.resp||'').toLowerCase().includes(cerca);
-      return ok && (!filtreAny||String(x.any)===filtreAny) && (!filtreExamen||x.examen===filtreExamen);
-    });
-    const resum = document.getElementById('resum-filtres');
-    const fa = []; if(filtreAny) fa.push(`Any: ${filtreAny}`); if(filtreExamen) fa.push(`Examen: ${filtreExamen}`); if(cerca) fa.push(`"${cerca}"`);
-    resum.textContent = fa.length ? `Filtrant per: ${fa.join(' · ')} — ${filtrades.length} resultat${filtrades.length!==1?'s':''}` : `${filtrades.length} pregunta${filtrades.length!==1?'s':''}`;
-    const ll = ['A','B','C','D'];
-    const llista = document.getElementById('llista');
-    if (!filtrades.length) { llista.innerHTML=`<div class="empty-state"><i class="ti ti-mood-empty"></i><p>${cerca||filtreAny||filtreExamen?'Cap resultat per a aquests filtres.':'Encara no hi ha preguntes!<br>Sigues el primer a afegir-ne una.'}</p></div>`; return; }
-    llista.innerHTML = filtrades.map((p,i) => {
-      let respHTML = '';
+  function renderLlista(){
+    const p=getPreguntesAsg();
+    const cerca=document.getElementById('cerca').value.toLowerCase();
+    const filtreAny=document.getElementById('filtre-any').value;
+    const filtreExamen=document.getElementById('filtre-examen').value;
+    const selAny=document.getElementById('filtre-any'); const actualAny=selAny.value;
+    const anys=[...new Set(p.map(x=>x.any).filter(Boolean))].sort((a,b)=>b-a);
+    selAny.innerHTML='<option value="">Tots els anys</option>'+anys.map(a=>`<option value="${a}" ${String(a)===actualAny?'selected':''}>${a}</option>`).join('');
+    selAny.value=actualAny;
+    const selEx=document.getElementById('filtre-examen'); const actualEx=selEx.value;
+    const exs=[...new Set(p.map(x=>x.examen).filter(Boolean))];
+    selEx.innerHTML='<option value="">Tots els exàmens</option>'+exs.map(e=>`<option value="${e}" ${e===actualEx?'selected':''}>${e}</option>`).join('');
+    selEx.value=actualEx;
+    let filtrades=p.filter(x=>{const ok=x.preg.toLowerCase().includes(cerca)||(x.resp||'').toLowerCase().includes(cerca);return ok&&(!filtreAny||String(x.any)===filtreAny)&&(!filtreExamen||x.examen===filtreExamen);});
+    const fa=[]; if(filtreAny) fa.push(`Any: ${filtreAny}`); if(filtreExamen) fa.push(`Examen: ${filtreExamen}`); if(cerca) fa.push(`"${cerca}"`);
+    document.getElementById('resum-filtres').textContent=fa.length?`Filtrant per: ${fa.join(' · ')} — ${filtrades.length} resultat${filtrades.length!==1?'s':''}`:filtrades.length+` pregunta${filtrades.length!==1?'s':''}`;
+    const ll=['A','B','C','D'];
+    const llista=document.getElementById('llista');
+    if(!filtrades.length){llista.innerHTML=`<div class="empty-state"><i class="ti ti-mood-empty"></i><p>${cerca||filtreAny||filtreExamen?'Cap resultat per a aquests filtres.':'Encara no hi ha preguntes!<br>Sigues el primer a afegir-ne una.'}</p></div>`;return;}
+    llista.innerHTML=filtrades.map((p,i)=>{
+      let respHTML='';
       if(p.tipusResp==='redaccio'&&p.resp) respHTML=`<div class="q-answer" id="qa-${p.id}">${p.resp}</div>`;
       else if(p.tipusResp==='test'&&p.opcions) respHTML=`<div class="q-opcions" id="qa-${p.id}">${p.opcions.map((o,oi)=>`<div class="q-op ${oi===p.correcta?'ok':''}">${ll[oi]}. ${o}${oi===p.correcta?' ✓':''}</div>`).join('')}</div>`;
       else if(p.tipusResp==='vf'&&p.respVF) respHTML=`<div class="q-answer" id="qa-${p.id}">${p.respVF==='V'?'✅ Vertadera':'❌ Falsa'}</div>`;
-      const teResp = p.tipusResp!=='sense';
-      const pillTipus = p.tipusResp==='test'?'<span class="pill pill-test">Test</span>':p.tipusResp==='redaccio'?'<span class="pill pill-redaccio">Redacció</span>':p.tipusResp==='vf'?'<span class="pill pill-vf">V/F</span>':'';
-      const teReports = p.reports&&p.reports.length>0;
-      const banners = teReports ? p.reports.map(r=>`<div class="q-report-banner"><i class="ti ti-alert-triangle"></i><div><strong>${r.motiu}</strong>${r.comentari?`<br>${r.comentari}`:''}</div></div>`).join('') : '';
+      const teResp=p.tipusResp!=='sense';
+      const pillTipus=p.tipusResp==='test'?'<span class="pill pill-test">Test</span>':p.tipusResp==='redaccio'?'<span class="pill pill-redaccio">Redacció</span>':p.tipusResp==='vf'?'<span class="pill pill-vf">V/F</span>':'';
+      const teReports=p.reports&&p.reports.length>0;
+      const banners=teReports?p.reports.map(r=>`<div class="q-report-banner"><i class="ti ti-alert-triangle"></i><div><strong>${r.motiu}</strong>${r.comentari?`<br>${r.comentari}`:''}</div></div>`).join(''):'';
       return `<div class="q-card${teReports?' reportada':''}" id="qcard-${p.id}">
         <div class="q-num">Pregunta ${i+1} de ${filtrades.length}</div>
-        ${banners}
-        <div class="q-text">${p.preg}</div>
-        ${respHTML}
+        ${banners}<div class="q-text">${p.preg}</div>${respHTML}
         <div class="q-footer">
           ${p.any?`<span class="pill pill-any">📅 ${p.any}</span>`:''}
           ${p.examen?`<span class="pill pill-examen">${p.examen}</span>`:''}
@@ -520,46 +648,46 @@
     }).join('');
   }
 
-  window.toggleQ = function(id, btn) { const el=document.getElementById('qa-'+id); const v=el.classList.toggle('vis'); btn.textContent=v?'Amagar':'Veure resposta'; }
+  window.toggleQ = function(id,btn){ const el=document.getElementById('qa-'+id); const v=el.classList.toggle('vis'); btn.textContent=v?'Amagar':'Veure resposta'; }
 
-  window.obrirReport = function(pregId) {
-    reportPregId = pregId; motiuSel = -1;
-    const p = preguntes.find(x => x.id === pregId);
-    document.getElementById('report-preg-preview').textContent = '"' + p.preg.substring(0,80) + (p.preg.length>80?'...':'"');
-    document.querySelectorAll('.motiu-opt').forEach(m => m.classList.remove('sel'));
-    document.getElementById('report-comentari').value = '';
-    document.getElementById('btn-report').disabled = true;
+  window.obrirReport = function(pregId){
+    reportPregId=pregId; motiuSel=-1;
+    const p=preguntes.find(x=>x.id===pregId);
+    document.getElementById('report-preg-preview').textContent='"'+p.preg.substring(0,80)+(p.preg.length>80?'...':'"');
+    document.querySelectorAll('.motiu-opt').forEach(m=>m.classList.remove('sel'));
+    document.getElementById('report-comentari').value='';
+    document.getElementById('btn-report').disabled=true;
     document.getElementById('modal-report').classList.add('show');
   }
 
-  window.selMotiu = function(idx) { motiuSel=idx; document.querySelectorAll('.motiu-opt').forEach((m,i)=>m.classList.toggle('sel',i===idx)); document.getElementById('btn-report').disabled=false; }
+  window.selMotiu = function(idx){ motiuSel=idx; document.querySelectorAll('.motiu-opt').forEach((m,i)=>m.classList.toggle('sel',i===idx)); document.getElementById('btn-report').disabled=false; }
 
-  window.enviarReport = async function() {
-    if (motiuSel < 0) return;
-    const p = preguntes.find(x => x.id === reportPregId);
-    const reports = [...(p.reports||[]), { motiu:MOTIUS[motiuSel], comentari:document.getElementById('report-comentari').value.trim(), data:avui }];
-    await updateDoc(doc(db, 'preguntes', reportPregId), { reports });
+  window.enviarReport = async function(){
+    if(motiuSel<0) return;
+    const p=preguntes.find(x=>x.id===reportPregId);
+    const reports=[...(p.reports||[]),{motiu:MOTIUS[motiuSel],comentari:document.getElementById('report-comentari').value.trim(),data:avui}];
+    await updateDoc(doc(db,'preguntes',reportPregId),{reports});
     tancarModal('modal-report');
     const t=document.getElementById('toast-report'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
   }
 
-  window.iniciarTest = function() {
-    const p = getPreguntesAsg().filter(x=>x.tipusResp!=='sense');
-    if (p.length<2) { alert('Necessites almenys 2 preguntes amb resposta per fer el test.'); return; }
-    const allResps = p.filter(x=>x.tipusResp==='redaccio'&&x.resp).map(x=>x.resp);
-    test.preguntes = p.sort(()=>Math.random()-0.5).map(x=>{
-      if(x.tipusResp==='test') return {...x,quizOpcions:x.opcions,quizCorrecta:x.correcta};
-      if(x.tipusResp==='vf') return {...x,quizOpcions:['Vertadera','Falsa'],quizCorrecta:x.respVF==='V'?0:1};
+  window.iniciarTest = function(){
+    const p=getPreguntesAsg().filter(x=>x.tipusResp!=='sense');
+    if(p.length<2){alert('Necessites almenys 2 preguntes amb resposta per fer el test.');return;}
+    const allResps=p.filter(x=>x.tipusResp==='redaccio'&&x.resp).map(x=>x.resp);
+    test.preguntes=p.sort(()=>Math.random()-0.5).map(x=>{
+      if(x.tipusResp==='test') return{...x,quizOpcions:x.opcions,quizCorrecta:x.correcta};
+      if(x.tipusResp==='vf') return{...x,quizOpcions:['Vertadera','Falsa'],quizCorrecta:x.respVF==='V'?0:1};
       const dist=allResps.filter(r=>r!==x.resp).sort(()=>Math.random()-0.5).slice(0,3);
       const barr=[x.resp,...dist].sort(()=>Math.random()-0.5);
-      return {...x,quizOpcions:barr,quizCorrecta:barr.indexOf(x.resp)};
+      return{...x,quizOpcions:barr,quizCorrecta:barr.indexOf(x.resp)};
     });
     test.index=0; test.correctes=0; go('s-test'); renderTest();
   }
 
-  function renderTest() {
-    const cos = document.getElementById('test-cos');
-    if (test.index>=test.preguntes.length) {
+  function renderTest(){
+    const cos=document.getElementById('test-cos');
+    if(test.index>=test.preguntes.length){
       const pct=Math.round((test.correctes/test.preguntes.length)*100);
       const msg=pct>=80?'Excel·lent! 🏆':pct>=60?'Molt bé! 👍':pct>=40?'Segueix practicant 💪':'Cal repassar més 📚';
       cos.innerHTML=`<div class="result-wrap"><div class="result-circle"><div class="result-num">${test.correctes}</div><div class="result-den">de ${test.preguntes.length}</div></div><div class="result-msg">${msg}</div><div class="result-sub">${pct}% de respostes correctes</div><div class="result-btns"><button class="btn-sec" onclick="go('s-quiz-mode')">Canviar modalitat</button><button class="btn-primary" onclick="iniciarTest()">Repetir</button></div></div>`; return;
@@ -568,7 +696,7 @@
     cos.innerHTML=`<div class="quiz-meta"><span>Pregunta ${test.index+1} de ${test.preguntes.length}</span><span>${test.correctes} correctes</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="card">${p.any?`<div style="margin-bottom:8px"><span class="pill pill-any">📅 ${p.any}</span>${p.examen?` <span class="pill pill-examen">${p.examen}</span>`:''}</div>`:p.examen?`<div style="margin-bottom:8px"><span class="pill pill-examen">${p.examen}</span></div>`:''}<div class="test-q">${p.preg}</div><div class="test-options">${p.quizOpcions.map((o,i)=>`<button class="test-opt" onclick="triarOpcio(this,${i},${p.quizCorrecta})"><span class="opt-letter">${l[i]}</span>${o}</button>`).join('')}</div><div class="test-feedback" id="test-fb"></div><div style="display:flex;justify-content:flex-end" id="test-next"></div></div>`;
   }
 
-  window.triarOpcio = function(btn,idx,correcta) {
+  window.triarOpcio = function(btn,idx,correcta){
     document.querySelectorAll('.test-opt').forEach(o=>o.disabled=true);
     const ok=idx===correcta;
     if(ok){btn.classList.add('correct');test.correctes++;}else{btn.classList.add('wrong');document.querySelectorAll('.test-opt')[correcta].classList.add('correct');}
@@ -576,14 +704,14 @@
     document.getElementById('test-next').innerHTML=`<button class="btn-primary" onclick="test.index++;renderTest()">${test.index+1<test.preguntes.length?'Següent →':'Veure resultats'}</button>`;
   }
 
-  window.iniciarTargetes = function() {
-    const p = getPreguntesAsg().filter(x=>x.tipusResp!=='sense');
-    if (!p.length) { alert('Necessites almenys 1 pregunta amb resposta.'); return; }
+  window.iniciarTargetes = function(){
+    const p=getPreguntesAsg().filter(x=>x.tipusResp!=='sense');
+    if(!p.length){alert('Necessites almenys 1 pregunta amb resposta.');return;}
     targetes.preguntes=p.sort(()=>Math.random()-0.5); targetes.index=0; targetes.correctes=0; targetes.incorrectes=0; targetes.girada=false;
     go('s-targetes'); renderTargetes();
   }
 
-  function renderTargetes() {
+  function renderTargetes(){
     const cos=document.getElementById('targetes-cos');
     if(targetes.index>=targetes.preguntes.length){
       const total=targetes.correctes+targetes.incorrectes; const pct=total>0?Math.round((targetes.correctes/total)*100):0;
@@ -595,10 +723,11 @@
     cos.innerHTML=`<div class="quiz-meta"><span>Targeta ${targetes.index+1} de ${targetes.preguntes.length}</span><span>✓ ${targetes.correctes} · ✗ ${targetes.incorrectes}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="flashcard-wrap"><div class="flashcard" id="fc" onclick="girarTargeta()"><div class="fc-face fc-front"><div class="fc-label">Pregunta</div><div class="fc-text">${p.preg}</div><div class="fc-hint">👆 Clica per veure la resposta</div></div><div class="fc-face fc-back"><div class="fc-label">Resposta</div><div class="fc-text">${rd}</div><div class="fc-hint">Com t'ha anat?</div></div></div></div><div id="fc-self" style="display:none"><div class="self-btns"><button class="btn-ko" onclick="puntarTargeta(false)">✗ No ho sabia</button><button class="btn-ok" onclick="puntarTargeta(true)">✓ Ho sabia</button></div></div>`;
   }
 
-  window.girarTargeta = function() { if(targetes.girada) return; document.getElementById('fc').classList.add('flipped'); document.getElementById('fc-self').style.display='block'; targetes.girada=true; }
-  window.puntarTargeta = function(ok) { if(ok) targetes.correctes++; else targetes.incorrectes++; targetes.index++; targetes.girada=false; renderTargetes(); }
+  window.girarTargeta = function(){ if(targetes.girada) return; document.getElementById('fc').classList.add('flipped'); document.getElementById('fc-self').style.display='block'; targetes.girada=true; }
+  window.puntarTargeta = function(ok){ if(ok) targetes.correctes++; else targetes.incorrectes++; targetes.index++; targetes.girada=false; renderTargetes(); }
 
-  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('show'); }));
+  document.getElementById('acces-input').addEventListener('keydown',e=>{if(e.key==='Enter') verificarAcces();});
+  document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m) m.classList.remove('show');}));
 </script>
 </body>
 </html>
